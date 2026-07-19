@@ -27,8 +27,8 @@ The manifest also records:
   preserved in the legacy evidence set;
 - the exact successful baseline trial whose stderr reported a rejected empty
   patch attempt;
-- model, task, attempt, timing, token, authentication, and API-key-removal
-  metadata inherited from each run.
+- model, task, attempt, timing, token, and generation-configuration metadata
+  inherited from each run.
 
 Run:
 

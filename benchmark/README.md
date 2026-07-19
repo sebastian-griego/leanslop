@@ -29,10 +29,7 @@ Family-local numeric labels are not comparable across task families.
 
 The runner:
 
-- requires `codex login status` to report ChatGPT authentication;
-- removes every `*_API_KEY` environment variable from Codex and scrubs common
-  key, token, secret, password, and credential variables from Lean;
-- invokes Codex in a fresh ephemeral directory with shell, browser, web, app,
+- invokes the model in a fresh ephemeral directory with shell, browser, web, app,
   code-host, and related tools disabled;
 - rejects recorded or stderr-reported tool attempts;
 - statically rejects proof bypasses, command-level metaprogramming, and
@@ -40,10 +37,9 @@ The runner:
 - compiles an exact target-type wrapper with pinned Lean/mathlib;
 - accepts exactly one stdout axiom report and rejects unexpected axioms.
 
-This uses a ChatGPT subscription session, not API-key authentication. The Lean
-compiler is hardened by environment scrubbing and static screening but is not
-inside an OS-level filesystem sandbox. Treat arbitrary model completions as
-untrusted code outside this controlled task set.
+The Lean compiler is hardened by environment filtering and static screening but
+is not inside an OS-level filesystem sandbox. Treat arbitrary model completions
+as untrusted code outside this controlled task set.
 
 ## Validate templates
 
