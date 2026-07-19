@@ -1,0 +1,47 @@
+{
+  "started_at": "2026-07-19T17:52:49.797185+00:00",
+  "model": "gpt-5.4",
+  "provider": "Codex CLI with ChatGPT authentication",
+  "trials": 1,
+  "max_attempts": 1,
+  "api_keys": "not used; *_API_KEY variables removed from Codex subprocesses",
+  "lean_toolchain": "leanprover/lean4:v4.32.0",
+  "mathlib_revision": "v4.32.0",
+  "tasks": [
+    "control_shallow_algebra"
+  ],
+  "finished_at": "2026-07-19T17:53:07.442570+00:00",
+  "results": [
+    {
+      "task_id": "control_shallow_algebra",
+      "depth": 0,
+      "frontier": "Standard real arithmetic and tactics",
+      "final_declaration": "Control.tested_shallow_control",
+      "trial": 1,
+      "model": "gpt-5.4",
+      "passed": true,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 6351,
+        "output_tokens": 225
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 7.125,
+          "compile_seconds": 10.516,
+          "compiled": true,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 6351,
+            "cached_input_tokens": 4096,
+            "output_tokens": 225,
+            "reasoning_output_tokens": 167
+          }
+        }
+      ]
+    }
+  ],
+  "passed": 1,
+  "total": 1
+}

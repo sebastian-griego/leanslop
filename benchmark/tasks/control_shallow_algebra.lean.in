@@ -1,0 +1,17 @@
+import Mathlib.Data.Real.Basic
+import Mathlib.Tactic
+
+namespace Control
+
+/- REQUIRED:
+theorem tested_shallow_control (x y : ℝ) : 2 * x * y ≤ x ^ 2 + y ^ 2
+-/
+
+__MODEL_COMPLETION__
+
+theorem benchmark_check_control (x y : ℝ) : 2 * x * y ≤ x ^ 2 + y ^ 2 :=
+  tested_shallow_control x y
+
+#print axioms benchmark_check_control
+
+end Control

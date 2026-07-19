@@ -1,0 +1,53 @@
+{
+  "date": "2026-07-19",
+  "kind": "exploratory spot check",
+  "authentication": "Codex CLI with ChatGPT session",
+  "api_keys_used": false,
+  "model": "gpt-5.4",
+  "lean": "v4.32.0",
+  "mathlib": {
+    "tag": "v4.32.0",
+    "commit": "81a5d257c8e410db227a6665ed08f64fea08e997"
+  },
+  "generation_tools": {
+    "filesystem": false,
+    "shell": false,
+    "browser": false,
+    "web_search": false
+  },
+  "verifier_at_generation": {
+    "required_type_wrapper": false,
+    "forbidden_tokens_checked": true,
+    "sorry_ax_checked": true
+  },
+  "posthoc_verifier": {
+    "required_type_wrapper": true,
+    "axiom_closure_checked": true,
+    "allowed_core_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "result": "The exact control completion still passes; all three exact depth-1 completions still fail."
+  },
+  "results": [
+    {
+      "run_id": "20260719T175249Z",
+      "task": "control_shallow_algebra",
+      "trials": 1,
+      "sequential_attempts": 1,
+      "lean_verified": 1
+    },
+    {
+      "run_id": "20260719T173519Z",
+      "task": "depth1_riesz_available",
+      "trials": 1,
+      "sequential_attempts": 3,
+      "lean_verified": 0,
+      "note": "The first candidate was compiled post hoc after a harmless todo-list event was reclassified."
+    }
+  ],
+  "deeper_tiers_run": false,
+  "depth_curve_measured": false,
+  "reason": "The shallowest Hahn-Banach redaction tier had no success in this one repair trajectory, so deeper tiers could not show a further decline."
+}

@@ -1,0 +1,73 @@
+{
+  "started_at": "2026-07-19T17:35:19.150745+00:00",
+  "model": "gpt-5.4",
+  "provider": "Codex CLI with ChatGPT authentication",
+  "trials": 1,
+  "max_attempts": 3,
+  "api_keys": "not used; *_API_KEY variables removed from Codex subprocesses",
+  "lean_toolchain": "leanprover/lean4:v4.32.0",
+  "mathlib_revision": "v4.32.0",
+  "tasks": [
+    "depth1_riesz_available"
+  ],
+  "finished_at": "2026-07-19T17:48:14.913820+00:00",
+  "results": [
+    {
+      "task_id": "depth1_riesz_available",
+      "depth": 1,
+      "frontier": "A supplied M. Riesz extension theorem",
+      "final_declaration": "Depth1.tested_hahn_banach",
+      "trial": 1,
+      "model": "gpt-5.4",
+      "passed": false,
+      "attempts_used": 3,
+      "token_totals": {
+        "input_tokens": 43239,
+        "output_tokens": 39762
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 290.687,
+          "compile_seconds": 0.0,
+          "compiled": false,
+          "validation_error": "Codex used prohibited tools: todo_list",
+          "usage": {
+            "input_tokens": 20801,
+            "cached_input_tokens": 12800,
+            "output_tokens": 15934,
+            "reasoning_output_tokens": 14413
+          }
+        },
+        {
+          "attempt": 2,
+          "model_seconds": 267.672,
+          "compile_seconds": 43.188,
+          "compiled": false,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 8090,
+            "cached_input_tokens": 6144,
+            "output_tokens": 14731,
+            "reasoning_output_tokens": 13414
+          }
+        },
+        {
+          "attempt": 3,
+          "model_seconds": 166.296,
+          "compile_seconds": 7.907,
+          "compiled": false,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 14348,
+            "cached_input_tokens": 0,
+            "output_tokens": 9097,
+            "reasoning_output_tokens": 7501
+          }
+        }
+      ]
+    }
+  ],
+  "passed": 0,
+  "total": 1
+}
