@@ -1,0 +1,18 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\intermediate_value_interfaces_redacted\trial_1\attempt_1.lean:35:41: error: Type mismatch
+  IsPreconnected.image hs ?m.93
+has type
+  ContinuousOn ?m.93 s → IsPreconnected (?m.93 '' s)
+but is expected to have type
+  IsPreconnected (f '' s)
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\intermediate_value_interfaces_redacted\trial_1\attempt_1.lean:35:50: error: Application type mismatch: The argument
+  hf
+has type
+  ContinuousOn f s
+of sort `Prop` but is expected to have type
+  X → ?m.88
+of sort `Type (max ?u.56 u)` in the application
+  IsPreconnected.image hs hf
+'IntermediateValue.benchmark_check_intermediate_value' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

@@ -1,100 +1,140 @@
-# What the X thread is claiming
+# Dependency redaction as a test of LLM proof reconstruction
 
-## Bottom line
+## Verdict
 
-Doomslide is not claiming that LLMs cannot solve undergraduate exercises,
-generate Lean proofs, or help formalize textbooks. He is proposing a
-dependency-ablation test of a narrower capability:
+The experiment gives **qualified support** to Doomslide's proposed mechanism,
+but not to his categorical wording.
 
-1. Choose a theorem already represented in mathlib.
-2. Remove the theorem and intermediate lemma declarations in its dependency
-   graph, at increasing graph distances.
-3. Ask a model to reconstruct the missing proof infrastructure and observe how
-   success changes with redaction depth.
+- With `gpt-5.6-sol`, a named or renamed Hahn-Banach result was used
+  successfully in 8/8 one-shot controls.
+- The same model produced 0/14 verified one-shot proofs after the final
+  Hahn-Banach theorem was removed, across four canonical-path frontiers.
+- The all-zero redacted tiers show a **cliff**, not the proposed scaling curve.
+  There is no measured slope among depths 1 through 4.
+- In a separate adaptive run, depth 1 verified on attempt 2 after one Lean
+  diagnostic. Depths 2, 3, and 4 remained unverified after three attempts.
+- Redaction was not universally fatal: the model solved rank-nullity in 3/3
+  one-shot trials and an intermediate-value theorem in 1/3.
 
-He does not specify a sampling metric, context policy, or compute budget. A
-rigorous implementation should hold those conditions fixed and report verified
-pass@k at each depth.
+The supported conclusion is narrow: **removing familiar intermediate
+interfaces sharply reduced one-shot reliability on this Hahn-Banach target.**
+The tests do not show that current LLMs are categorically unable to reconstruct
+such mathematics, and they do not establish monotonic performance scaling with
+dependency depth.
 
-The implied hypothesis is that performance will worsen as the missing
-dependency chain gets deeper. The alleged weakness is global proof architecture
-and interface design, not local tactic selection or short mathematical insight.
+## What the thread proposed
 
-This interpretation is strongly supported by the thread. His broader
-categorical wording, however, is not established by evidence he supplies there:
-he cites personal periodic checks, gives no harness or results, and names only
-Hahn-Banach as a concrete wager.
+The [root post](https://x.com/doomslide/status/2078858292709728700) says current
+LLMs cannot construct some undergraduate parts of mathlib. The replies make the
+test more precise:
 
-## Relevant X context
+1. Doomslide says this comes from personal checks, names no paper, and
+   [asks to be proved wrong](https://x.com/doomslide/status/2078858854339604729).
+2. He defines the task as proving a theorem with
+   [no intermediate lemmas available](https://x.com/doomslide/status/2078859195491700903).
+3. He offers [Hahn-Banach as a concrete wager](https://x.com/doomslide/status/2078863424621039871).
+4. The [focal post](https://x.com/doomslide/status/2078869136017387781)
+   proposes removing declarations at several dependency-graph depths and
+   observing how performance scales.
 
-The focal post is the end of this reply chain:
+The surrounding claims supply the intended mechanism. He argues that benchmarks
+select for [shallow problems](https://x.com/doomslide/status/2078864081360998730),
+defines shallow in terms of how far a proof must move from the stated problem,
+and predicts weakness on
+[long arguments whose local steps are simple](https://x.com/doomslide/status/2078868027844518050).
+He also contrasts
+[breadth-first counterexample search with depth-first proof construction](https://x.com/doomslide/status/2077690440380223743).
 
-- [Root](https://x.com/doomslide/status/2078858292709728700): current LLMs
-  allegedly cannot construct some undergraduate mathlib material despite
-  training exposure and benchmark optimization.
-- [Request for a source](https://x.com/pli_cachete/status/2078858550017728950).
-- [Doomslide's answer](https://x.com/doomslide/status/2078858854339604729):
-  he checks periodically, knows of no paper, and wants to be proven wrong.
-- [Key clarification](https://x.com/doomslide/status/2078859195491700903):
-  the task is proving a theorem without its intermediate lemmas.
-- [Sebastian offers to test it](https://x.com/sebngriego/status/2078866002281160981).
-- [Focal reply](https://x.com/doomslide/status/2078869136017387781):
-  redact to several dependency-graph depths and observe scaling.
+The post does not specify a model, theorem sample, context policy, compute
+budget, graph-redaction algorithm, or success metric. A fixed-budget,
+Lean-verified pass rate is this report's operationalization, not a protocol
+quoted from Doomslide.
 
-Other posts narrow the intended claim:
+### Historical continuity and qualifications
 
-- [Hahn-Banach is the concrete example](https://x.com/doomslide/status/2078863424621039871).
-- [The task is not supposed to be superhuman](https://x.com/doomslide/status/2078862503459557856);
-  he claims most professors could reconstruct it given time.
-- [Benchmarks allegedly select for shallow problems](https://x.com/doomslide/status/2078864081360998730).
-- ["Shallow" means how far one must step away from the stated problem](https://x.com/doomslide/status/2078868416916574211).
-- [Long, locally simple but globally deep arguments are the predicted weak
-  point](https://x.com/doomslide/status/2078868027844518050).
+This criterion predates the July 2026 thread. In 2024 Doomslide asked about
+[reconstructing all of mathlib and the inference cost](https://x.com/doomslide/status/1816804130217680955),
+then said that
+[even reconstructing a small portion would be impressive](https://x.com/doomslide/status/1816805046593683655).
+In 2025 he distinguished cached proofs from compact programs that can
+[generate those proofs](https://x.com/doomslide/status/1940894914319208657).
 
-The root is a pushback against an AI-math hype chain:
+His position is contingent rather than an architectural impossibility claim.
+He has tied the result to
+[formal-data scale](https://x.com/doomslide/status/1934396477863850185),
+discussed the difficulty of
+[gathering enough useful context](https://x.com/doomslide/status/2075926126950555694),
+and later allowed that
+[recent models might be pushed to the target](https://x.com/doomslide/status/2078918397035786667).
+
+## Surrounding debate
+
+The thread responds to an AI-mathematics hype chain:
 
 - [Edgar Dobriban](https://x.com/EdgarDobriban/status/2077082912021786660)
-  reports a GPT-5.6-assisted result in false-discovery-rate theory.
+  reports a GPT-5.6-assisted counterexample in false-discovery-rate theory after
+  roughly 90 minutes.
 - [Noam Brown](https://x.com/polynoamial/status/2077762676932165996)
-  quotes that result and extrapolates from recent model progress.
+  extrapolates from that result.
 - [Alek Dimitriev](https://x.com/tensor_rotator/status/2078335791156310369)
-  predicts the next Fields Medal will be the last awarded to humans.
-- [Christian Szegedy](https://x.com/ChrSzegedy/status/2078624857223536824)
-  repeats the prediction.
+  and [Christian Szegedy](https://x.com/ChrSzegedy/status/2078624857223536824)
+  predict that the next Fields Medal will be the last awarded to humans.
 
-[Szegedy later explains](https://x.com/ChrSzegedy/status/2078829215185768810)
-that his prediction is partly institutional: AI-heavy collaboration may make
-credit assignment incompatible with the medal's purpose. That is distinct from
-doomslide's narrower capability claim.
+Szegedy later
+[clarifies that his forecast is partly institutional](https://x.com/ChrSzegedy/status/2078829215185768810):
+AI-heavy collaboration may make individual credit incompatible with the
+medal's purpose. That is different from a pure capability prediction.
 
-Two counterexamples raised in the replies do not run the proposed test:
+The Dobriban result is real evidence of mathematical capability. It is also a
+counterexample-search task, the category Doomslide had just characterized as
+comparatively breadth-first. Compute matters too: another reply makes the claim
+[conditional on test-time compute](https://x.com/othy_h/status/2078864447397838890),
+and Doomslide answers with a
+[pass@4096 joke](https://x.com/doomslide/status/2078864673009545709).
 
-- The [Claude-assisted Axler companion](https://github.com/rkirov/linear-algebra-done-right-lean)
-  uses mathlib directly and receives roughly one to two hours of line-by-line
-  human review per subsection.
-- A reply
-  [asserts that Codex, Claude, GPT-5.6, and Fable can do the task](https://x.com/emmetics/status/2078869893131452772),
-  but supplies no depth-controlled result. Reports of strong solutions do not
-  measure reconstruction under controlled removal of a long dependency
-  hierarchy.
+Two reply-chain counterexamples do not implement the proposed ablation:
 
-## What a valid test must remove
+- The [Lean companion to Axler's Linear Algebra Done Right](https://github.com/rkirov/linear-algebra-done-right-lean)
+  is substantial AI-assisted undergraduate formalization. Its own README says
+  it uses mathlib directly, receives roughly one to two hours of line-by-line
+  human review per subsection, leaves exercises as `sorry`, and prose-defers
+  some numbered results. Doomslide also clarified that he meant
+  ["parts"](https://x.com/doomslide/status/2078874591208829261), not every
+  undergraduate theorem.
+- A reply [asserts that several systems can already do it](https://x.com/emmetics/status/2078869893131452772)
+  but gives no controlled result; Doomslide's answer is
+  ["prove it"](https://x.com/doomslide/status/2078870938888683668).
 
-Hiding proof bodies is insufficient. If the lemma declarations remain
-callable, the model can use them without reconstructing their content.
+Thomas Bloom's reported
+[Erdos problem #119 result](https://x.com/thomasfbloom/status/2078732544070074777)
+is evidence of informal AI-assisted mathematical discovery, not Lean
+formalization or dependency reconstruction. A later post
+[corrects the account to an AI-human collaboration](https://x.com/thomasfbloom/status/2078762773387833679).
 
-A defensible test should:
+## What a valid redaction test requires
 
-- measure theorem-DAG distance, not raw file-import depth;
-- retain definitions and types while removing proposition declarations;
-- prevent alternate declarations whose dependency closure contains a redacted
-  lemma;
-- prohibit source lookup during generation;
-- hold the model, context, verifier access, sampling count, and compute budget
-  fixed;
-- compile every candidate and reject `sorryAx` or other proof bypasses.
+Removing proof bodies is not enough. If proposition declarations remain
+callable, the model can reuse them without reconstructing anything. A stronger
+experiment should:
 
-In mathlib `v4.32.0`, the relevant local chain is:
+- remove declarations, not merely implementations;
+- measure theorem-DAG distance rather than file-import distance;
+- account for aliases and alternative routes whose closure reaches a hidden
+  result;
+- keep imports, model, prompt policy, feedback, sampling, and compute fixed;
+- deny source retrieval during generation;
+- compile exact target types and reject proof bypasses;
+- report independent samples separately from adaptive repairs.
+
+No paper found in this review implements Doomslide's exact progressive
+declaration-redaction experiment. The local benchmark is therefore a targeted
+spot check rather than a replication of an established protocol.
+
+## Benchmark design
+
+The pinned environment is Lean and mathlib `v4.32.0`, with mathlib commit
+`81a5d257c8e410db227a6665ed08f64fea08e997`. The relevant canonical local path
+in mathlib is:
 
 ```text
 exists_extension_of_le_sublinear
@@ -103,109 +143,224 @@ exists_extension_of_le_sublinear
       -> RieszExtension.step
 ```
 
-See mathlib's
-[extension source](https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Analysis/Convex/Cone/Extension.lean)
-and the
-[normed-space wrapper](https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Analysis/Normed/Module/HahnBanach.lean).
+The source is mathlib's
+[cone-extension module](https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Analysis/Convex/Cone/Extension.lean).
+The normed-space
+[Hahn-Banach wrapper](https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Analysis/Normed/Module/HahnBanach.lean)
+builds on this algebraic real-valued result.
 
-## Local spot check
+| Class | Available frontier | Purpose |
+|---|---|---|
+| Matched control | Renamed theorem with the exact target type | Same narrow imports and interface as redacted tasks |
+| Library sanity baseline | Original extension module and named final theorem | Confirms ordinary theorem lookup |
+| Hahn depth 1 | Supplied `riesz_extension` equivalent | Reconstruct final reduction |
+| Hahn depth 2 | Supplied `RieszExtension.exists_top` equivalent | Reconstruct Riesz and final reduction |
+| Hahn depth 3 | Supplied `RieszExtension.step` equivalent | Reconstruct maximal-extension layer upward |
+| Hahn depth 4 | Foundational imports only | Reconstruct the complete local scaffold |
+| Rank-nullity | Exact final theorem hidden | Complementary local-recombination task |
+| Intermediate value | Three local IVT interfaces hidden | Complementary alternate-route task |
 
-The repository contains four path-ablation templates plus a positive control.
-They approximate increasing dependency depth along mathlib's canonical local
-proof path; they do not compute or remove a complete theorem-DAG layer. Known
-mathlib proofs were adapted to compile against every template, and an import
-check confirmed the original redacted declarations were absent.
+These are **canonical-path frontiers**, not complete theorem-DAG layers. The
+numeric labels on rank-nullity and intermediate value are family-local and
+cannot be pooled into the Hahn-Banach depth curve.
 
-Test conditions:
+`validate_templates.py` checks that every hidden declaration is unavailable
+under its task imports and compiles a canonical reconstruction against every
+template. Thus all tasks are satisfiable in the pinned environment.
 
-- Model: `gpt-5.4` through the authenticated Codex/ChatGPT CLI.
-- API keys: none. The runner removes every `*_API_KEY` variable and requires
-  Codex to report ChatGPT authentication before starting.
-- Generation access: no shell, filesystem, browser, or web search.
-- Verifier: Lean `v4.32.0`, mathlib `v4.32.0`.
-- Bypasses: `sorry`, `admit`, new axioms, `opaque`, `unsafe`, and `sorryAx`
-  are rejected.
+### No-key generation and verification
 
-Results:
+No user-supplied API key or pay-per-token API invocation was used for these
+tests.
 
-| Task | Available proof infrastructure | Attempts | Verified |
+- The runner requires `codex login status` to report a ChatGPT login and invokes
+  the Codex CLI through that existing ChatGPT session.
+- Before each model call it removes every environment variable ending in
+  `*_API_KEY`. The current runner also removes common key, token, secret,
+  password, and credential variables from the Lean compiler subprocess.
+- `gpt-5.6-sol` and `gpt-5.5` were invoked at high reasoning effort in fresh,
+  ephemeral directories. Shell, browser, web, app, code-host, and related tools
+  were disabled. The model received the fixed template and, only in adaptive
+  runs, the previous Lean diagnostic.
+- Each attempt had a 900-second model timeout and a 180-second Lean timeout.
+  A fixed cap does not imply equal actual compute: token use and completion time
+  varied substantially.
+- Exact type wrappers and `#print axioms` enforce the target type and axiom
+  closure. The runner rejects `sorry`, `admit`, injected axioms, unsafe or
+  opaque declarations, native decision bypasses, compile-time I/O/meta commands,
+  and unexpected axioms.
+
+An audit found two protocol limitations. First, one successful library-baseline
+trial logged a rejected empty `apply_patch` attempt. It changed nothing and the
+returned proof independently verifies, but that trial is not strictly free of
+attempted tool activity. No redacted trial did this. Second, the historical
+compiler subprocess inherited the parent environment even though model
+generation had API-key variables removed. None of the exact candidates used
+I/O or metaprogramming, and no API key or API service was used, but an
+adversarial Lean completion could in principle have read local state. The
+current runner scrubs compiler key variables and rejects obvious compile-time
+access; it is still static hardening, not an OS-level filesystem sandbox.
+Raw Codex response/event streams are excluded from Git because they contain
+model reasoning. The exact Lean candidates are independently recompilable, but
+the generation-side no-tool record is supported by runner configuration,
+curated result metadata, and the explicit protocol note rather than by
+published raw streams.
+
+## Results
+
+### Independent one-shot trials
+
+All rows below are fresh sessions with `max_attempts=1`.
+
+| `gpt-5.6-sol` task | Verified | Median model time |
+|---|---:|---:|
+| Matched narrow-import Hahn control | 3/3 | 5.734 s |
+| Named Hahn theorem imported | 5/5 | 20.922 s |
+| Rank-nullity target redacted | 3/3 | 38.078 s |
+| Intermediate-value interfaces redacted | 1/3 | 152.719 s |
+| Hahn depth 1 | 0/3 | 308.578 s |
+| Hahn depth 2 | 0/3 | 353.781 s |
+| Hahn depth 3 | 0/3 | 412.469 s |
+| Hahn depth 4 | 0/5 | 338.765 s |
+
+The primary matrix before adding the matched control contained 25 trials and
+used 396,678 input tokens plus 224,298 output tokens. The three matched controls
+add 26,561 input and 510 output tokens.
+
+The strongest within-target observation is the discontinuity between direct
+theorem availability, 8/8 across two controls, and any Hahn-Banach
+reconstruction, 0/14. The matched control rules out the full extension-module
+import as the sole explanation: the model can connect a renamed premise to the
+exact goal under the same narrow imports.
+
+The result does **not** show progressive degradation from depth 1 to depth 4.
+Every redacted tier is already at the floor. More samples, easier intermediate
+frontiers, or a stronger interaction policy are needed to estimate a curve.
+
+The complementary tasks matter. Rank-nullity passed 3/3, although every success
+used the same compact quotient-equivalence route as mathlib and may reflect
+memorization or familiar local recombination. The intermediate-value success is
+stronger evidence of reconstruction: it used a direct connected-image
+separation argument rather than rebuilding the hidden canonical interface
+chain.
+
+### Compiler-guided repair
+
+Attempts within one conversation are adaptive and dependent. They are not
+additional pass@k samples.
+
+| `gpt-5.6-sol` Hahn frontier | Attempt sequence | Final result | Total model time |
 |---|---|---:|---:|
-| Shallow control: `2xy <= x^2 + y^2` | Standard real arithmetic | 1 | 1 |
-| Real Hahn-Banach core | M. Riesz extension supplied | 3 | 0 |
+| Depth 1 | fail, pass | Verified | 411.031 s |
+| Depth 2 | fail, fail, fail | Unverified | 724.171 s |
+| Depth 3 | fail, fail, fail | Unverified | 850.594 s |
+| Depth 4 | fail, fail, fail | Unverified | 765.673 s |
 
-The control passed on its first attempt. All three sequential Hahn-Banach
-attempts in one repair conversation failed Lean checking at the shallowest
-redaction tier. Because that tier produced no success in this small run, deeper
-tiers could not show a further decline and were not run. The focal scaling
-prediction therefore remains untested.
+The verified depth-1 declaration depends only on Lean's expected core axioms,
+the supplied Riesz frontier, and `Quot.sound`. It contains no bypass. This is a
+direct counterexample to reading "unable" as "cannot produce a proof even with
+modest compiler feedback."
 
-One runner detail is worth recording: an informational Codex `todo_list` event
-was initially classified as forbidden even though it exposed no external
-information. That first candidate was compiled after correcting the
-classification and also failed. Only one later candidate therefore received
-actual Lean compiler diagnostics during generation. This makes the result an
-exploratory failure case, not three independent samples or a pass@k estimate.
-The algebra control checks only the model/CLI/compiler plumbing; it is not
-comparable in difficulty or imports to Hahn-Banach.
+Failed candidates often recovered the recognizable cone, maximal-extension,
+and Zorn architecture. They broke on `PointedCone` fields, `LinearPMap`
+construction and ordering, subtype transport, definitional equality, linearity
+obligations, and occasionally nonexistent helper names. The failures therefore
+combine global decomposition with mathlib interface fluency; they are not clean
+evidence of informal mathematical ignorance.
 
-An audit found that the original runner expressed required signatures only in
-comments. The generated candidates did attempt the full requested signatures,
-but the harness has since been hardened with compiled type wrappers and axiom
-closure checks. Rechecking the exact preserved completions under the hardened
-verifier leaves the outcome unchanged: the control passes and the three
-Hahn-Banach attempts fail. See the
-[curated evidence](benchmark/evidence/README.md).
+### Small model comparison
 
-The original summary artifacts preserve model, authentication, token, timing,
-and repair-history metadata. Raw Codex event streams are not committed because
-they include model reasoning, so the no-tool condition is documented by the
-runner configuration rather than independently auditable event logs.
+A separate `gpt-5.5` one-shot check passed the named Hahn baseline and failed
+one trial each on redacted rank-nullity, intermediate value, and Hahn depth 1:
+1/4 overall. With one sample per condition it is only corroborative. An earlier
+`gpt-5.4` trajectory passed a shallow algebra plumbing control and failed all
+three adaptive depth-1 attempts; its first candidate was initially
+misclassified because an informational todo event was treated as a tool, but
+recompiling the preserved source still fails.
 
 ## External evidence
 
-Recent primary research supports the direction of the hypothesis:
+The closest primary research supports a real premise, context, and
+long-horizon gap, while also showing why a universal inability claim is too
+strong:
 
-- [MA-ProofBench](https://arxiv.org/html/2606.13782) reports that miniF2F has
-  reached 100% for one system, while the best evaluated model, GPT-5.5, reaches
-  only 16% Pass@8 on 100 undergraduate analysis tasks and 5% on 100 Ph.D.-level
-  tasks. The paper identifies incomplete proofs and mathlib hallucinations as
-  dominant failure modes.
-- [TaoBench](https://arxiv.org/html/2603.12744) pairs 150 undergraduate
-  analysis exercises using Tao's from-scratch framework with mathematically
-  equivalent mathlib formulations. Performance falls by roughly 26% on
-  average in the from-scratch formulation.
-- [TheoremBench](https://arxiv.org/html/2606.09450) finds that explicitly
-  supplying intermediate premises substantially improves proof success for
-  capable provers.
-- [VeriSoftBench](https://arxiv.org/abs/2602.18307), a repository-scale formal
-  software-verification benchmark rather than a math-redaction experiment,
-  observes that success is negatively associated with large, multi-hop
-  transitive dependency closures.
+- [TaoBench](https://arxiv.org/html/2603.12744) contains 150 paired
+  undergraduate-analysis problems. Across specialized provers, pass@128 drops
+  from 69.33% to 41.33% for DeepSeek-Prover-V2-7B, 70.67% to 37.33% for
+  Goedel-Prover-V2-8B, and 72.67% to 49.33% for its 32B version when moving
+  from mathlib formulations to Tao's from-scratch framework. This is
+  definitional shift, not theorem-declaration redaction, but it strongly
+  supports the generalization concern.
+- [TheoremBench](https://arxiv.org/html/2606.09450) compares standalone final
+  statements with dependency-aware tasks that expose supporting results as
+  explicit premises. Capable provers improve substantially when the premises
+  are supplied. It is the closest inverse of Doomslide's intervention, though
+  its premised dataset also expands targets into subtheorems.
+- [VeriSoftBench](https://arxiv.org/html/2602.18307) studies 500
+  repository-scale software-verification obligations. Average project
+  dependencies grow from 11.58 direct to 37.93 transitive references; the paper
+  reports that long dependency chains, rather than nearby symbol count alone,
+  correlate with lower success. This is repository verification, not
+  mathematical reconstruction.
+- [MA-ProofBench](https://arxiv.org/html/2606.13782) reports `gpt-5.5` at 6.5%
+  Pass@1 and 16% Pass@8 on undergraduate analysis, falling to 1.75% and 5% on
+  its PhD-level tier. Advanced analysis remains far from saturated.
+- [MathlibLemma](https://arxiv.org/abs/2602.02561) reports 1,506
+  bypass-screened, Lean-checked generated folklore proofs and a benchmark of
+  4,028 statements. Models demonstrably can create missing mathematical
+  connective tissue.
+- [CAM-Bench](https://arxiv.org/html/2605.17255) gives long-horizon,
+  compiler-interactive systems up to eight hours per task. M2F verifies 143/200
+  and Aristotle 125/200 sampled tasks, far above direct baselines. Remaining
+  failures are dominated by missing infrastructure, API grounding, type
+  discipline, and proof decomposition, closely matching the local diagnostics.
+- [LeanMarathon](https://arxiv.org/html/2606.05400) is the strongest
+  counterweight to categorical long-proof claims. A multi-agent `gpt-5.5`
+  system formalizes all seven research targets in its evaluation, producing
+  258 lemmas and theorems without `sorry`. Its three runs use 245M to 796M
+  tokens and critical paths of roughly 11.5 to 40.7 hours. This does not answer
+  the fixed-budget, closed-book Hahn-Banach test; it shows that long-horizon
+  success is possible under a substantially different harness, decomposition,
+  tool, and compute regime.
 
-There is also important counterweight:
+These studies triangulate Doomslide's proposed weakness, but none establishes
+his exact monotonic declaration-depth law.
 
-- [MathlibLemma](https://arxiv.org/abs/2602.02561) reports 1,506 Lean-checked,
-  bypass-screened folklore lemmas generated by an LLM pipeline. Models can
-  create useful missing connective tissue; the claim cannot reasonably be
-  "models never construct intermediate lemmas."
+## Limitations
 
-## Assessment
+- The sample is small and not statistically powered.
+- Hahn-Banach is the only family with a four-frontier series.
+- The series follows one canonical proof path, not an exhaustive theorem DAG.
+- Alternate declarations and routes may survive redaction; the IVT success
+  demonstrates why canonical depth is not intrinsic difficulty.
+- The prompt exposes task names, frontier descriptions, and numeric tiers.
+- Public mathlib statements and proofs may be represented in pretraining.
+- The model alias has no immutable snapshot or controllable seed.
+- Most historical trials predate per-attempt source hashes, and the exact
+  pre-hardening runner file was not archived. The curated manifest pins the
+  preserved sources at curation time but cannot prove a byte-for-byte
+  precuration chain of custody.
+- One-shot failures do not imply failures under search, retrieval, Lean tools,
+  multi-agent decomposition, or a larger budget.
+- No Claude, Gemini, Fable, specialist prover, or human-expert baseline was run.
+- Hahn-Banach is commonly graduate functional analysis, not a universal
+  undergraduate topic. Rank-nullity and IVT are cleaner undergraduate checks.
+- Static screening and post-hoc candidate audit are not a substitute for an
+  OS-level sandbox around untrusted Lean metaprogramming.
 
-The best-supported conclusion is:
+## Final assessment
 
-- **High confidence:** the focal post proposes progressive dependency
-  redaction as a test of hierarchical proof reconstruction.
-- **High confidence:** ordinary proof-completion scores overstate performance
-  when familiar definitions, premises, or repository context are removed.
-- **Low-to-moderate confidence:** Hahn-Banach-like deep formal developments are
-  a plausible weakness for current systems. The local `gpt-5.4` failure and
-  recent benchmarks point in this direction, but the run did not measure a
-  depth curve.
-- **Low confidence in the universal wording:** the thread does not prove that
-  every current frontier model is unable to reconstruct such material.
-  `gpt-5.6` and Claude Fable were not locally tested, and one target/model run
-  cannot establish a model-family capability boundary.
+The focal post identifies a useful evaluation target: ordinary theorem
+completion can hide whether a system can reconstruct the missing hierarchy of
+interfaces and lemmas. The local data find a large observed
+dependency-availability gap across these Hahn-Banach trials and failure modes
+consistent with that mechanism.
 
-Hahn-Banach is also more often taught in graduate functional analysis than in
-a universal undergraduate curriculum. That weakens the rhetoric around
-"undergraduate parts," but not the proposed dependency-depth experiment.
+They do not establish an impossibility result, a universal frontier-model
+boundary, or the proposed depth-scaling law. The most defensible reading is:
+**in this Hahn-Banach one-shot setting, Doomslide's bottleneck hypothesis is
+directionally supported, but "unable" is too strong once compiler-guided repair
+and long-horizon systems are included.**
+
+Exact candidates, diagnostics, run metadata, hashes, exclusions, and protocol
+notes are in [the curated evidence](benchmark/evidence/README.md).

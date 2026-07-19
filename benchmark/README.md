@@ -1,58 +1,102 @@
-# Dependency-redaction spot check
+# Dependency-redaction benchmark
 
-This benchmark tests the concrete Hahn-Banach proposal from the X thread
-analyzed in this repository. It uses the real-valued sublinear form of
-Hahn-Banach in mathlib and progressively moves the available frontier down its
-canonical local proof path:
+This benchmark tests the concrete Hahn-Banach proposal analyzed in
+[`REPORT.md`](../REPORT.md): hide a theorem and successively earlier
+intermediate declarations, then ask a model to reconstruct the missing Lean
+development.
 
-0. a shallow real-algebra control task
-1. `riesz_extension`
-2. `RieszExtension.exists_top`
-3. `RieszExtension.step`
-4. the complete local Riesz/Hahn-Banach scaffold
+## Task families
 
-Each Hahn-Banach task imports only the three modules imported by mathlib's
-`Analysis.Convex.Cone.Extension` module. A frontier declaration is represented
-by a task-specific axiom at the shallower depths. The model receives the final
-Hahn-Banach statement and the frontier statement, but no prescribed
-intermediate lemma names or signatures.
+The Hahn-Banach series uses the real-valued sublinear theorem in mathlib:
 
-These tiers are a controlled path ablation, not a complete theorem-DAG
-redaction. A full experiment would compute each dependency closure, account for
-alternate declarations, and sample every depth enough to estimate pass@k.
+```text
+exists_extension_of_le_sublinear
+  -> riesz_extension
+    -> RieszExtension.exists_top
+      -> RieszExtension.step
+```
 
-The runner sends only the task template and compiler diagnostics to the model.
-It provides no tools and no access to the local mathlib source. Explicit
-`sorry`, `admit`, `axiom`, `opaque`, or `unsafe` tokens are rejected before
-compilation. A compiled wrapper enforces the complete required theorem type,
-and its `#print axioms` output rejects any other injected axiom outside a small
-allowlist of Lean's trusted core axioms plus the task's supplied frontier.
-Any prohibited tool event terminates that trial so information from it cannot
-enter a later repair attempt.
+Depths 1 through 4 supply progressively earlier frontiers along that path. A
+matched control supplies a renamed theorem with the exact final signature under
+the same narrow imports; a separate library sanity baseline imports the original
+extension module. Rank-nullity and intermediate-value tasks test different
+redaction patterns.
 
-## Run
+The tiers are canonical-path ablations, not complete theorem-DAG layers.
+Family-local numeric labels are not comparable across task families.
 
-Sign in to Codex with a ChatGPT account, install the pinned Lean/mathlib
-dependencies, and run:
+## Verification boundary
+
+The runner:
+
+- requires `codex login status` to report ChatGPT authentication;
+- removes every `*_API_KEY` environment variable from Codex and scrubs common
+  key, token, secret, password, and credential variables from Lean;
+- invokes Codex in a fresh ephemeral directory with shell, browser, web, app,
+  code-host, and related tools disabled;
+- rejects recorded or stderr-reported tool attempts;
+- statically rejects proof bypasses, command-level metaprogramming, and
+  compile-time I/O;
+- compiles an exact target-type wrapper with pinned Lean/mathlib;
+- accepts exactly one stdout axiom report and rejects unexpected axioms.
+
+This uses a ChatGPT subscription session, not API-key authentication. The Lean
+compiler is hardened by environment scrubbing and static screening but is not
+inside an OS-level filesystem sandbox. Treat arbitrary model completions as
+untrusted code outside this controlled task set.
+
+## Validate templates
+
+Install the pinned dependencies and prove that the hidden declarations are
+absent while canonical reference reconstructions still compile:
 
 ```text
 lake update
 lake exe cache get
-python benchmark/run_benchmark.py --model gpt-5.4
+python benchmark/validate_templates.py
 ```
 
-The runner removes all environment variables ending in `_API_KEY` and refuses
-to start unless `codex login status` reports `Logged in using ChatGPT`. It
-therefore uses the Codex CLI's existing ChatGPT session, not API-key
-authentication.
+## Run
 
-Results are written below `benchmark/results/`. This is a spot check, not a
-statistically powered benchmark: one repair trajectory cannot estimate pass@k,
-measure a depth curve, or establish a claim about all current models.
+A single matched-control trial:
 
-The exact generated Lean candidates from the reported run are curated under
-`benchmark/evidence/`. Run `python benchmark/verify_evidence.py` to recheck them
-with the current type and axiom verifier.
+```text
+python benchmark/run_benchmark.py \
+  --model gpt-5.6-sol \
+  --trials 1 \
+  --max-attempts 1 \
+  --task control_hahn_banach_premise_available
+```
 
-Run `python benchmark/validate_templates.py` to adapt the canonical proof from
-the pinned mathlib checkout and confirm that every template is satisfiable.
+A one-shot Hahn-Banach matrix:
+
+```text
+python benchmark/run_benchmark.py --model gpt-5.6-sol --trials 1 --max-attempts 1 --task control_hahn_banach_premise_available --task depth1_riesz_available --task depth2_maximal_extension_available --task depth3_one_step_available --task depth4_no_scaffold
+```
+
+Omitting `--task` runs every task. Output is written below
+`benchmark/results/`, which is ignored by Git because raw response JSON includes
+model reasoning.
+
+One-shot trials are independent samples. Setting `--max-attempts` above one
+creates an adaptive conversation in which later attempts receive the preceding
+Lean diagnostic; those attempts must not be reported as independent pass@k
+samples.
+
+## Evidence
+
+The reported runs are curated under [`benchmark/evidence`](evidence/README.md).
+Only assembled Lean, diagnostics, result/summary metadata, and hashes are
+committed. Raw response streams are excluded.
+
+Recheck the evidence with the current static policy, compiler, exact type, and
+axiom verifier:
+
+```text
+python -m unittest benchmark/test_harness.py
+python benchmark/verify_evidence.py
+```
+
+`curate_evidence.py` enforces the report's exact included/excluded run registry,
+cross-checks summaries and stored artifact hashes, and refuses to include raw
+response artifacts.

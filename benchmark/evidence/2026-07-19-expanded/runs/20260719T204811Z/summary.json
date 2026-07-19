@@ -1,0 +1,163 @@
+{
+  "started_at": "2026-07-19T20:48:11.445218+00:00",
+  "model": "gpt-5.6-sol",
+  "provider": "Codex CLI with ChatGPT authentication",
+  "trials": 2,
+  "max_attempts": 1,
+  "api_keys": "not used; *_API_KEY variables removed from Codex subprocesses",
+  "api_key_variables_removed": [
+    "ANTHROPIC_API_KEY",
+    "ARISTOTLE_API_KEY",
+    "SAM_API_KEY"
+  ],
+  "codex_cli_version": "codex-cli 0.144.6",
+  "lean_toolchain": "leanprover/lean4:v4.32.0",
+  "lean_version": "Lean (version 4.32.0, x86_64-w64-windows-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "mathlib": {
+    "input_revision": "v4.32.0",
+    "manifest_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+    "installed_commit": "81a5d257c8e410db227a6665ed08f64fea08e997"
+  },
+  "benchmark_git_commit": "2df07aff8b2b3567a3694d50300ebfd8978ebf47",
+  "runner_sha256": "d4e525c2d74ee1fecbca56d2324d01b9af7f20f17427bdac39bba3a69d7c93c3",
+  "task_sha256": {
+    "rank_nullity_target_redacted": "e6f97abe7b49170305cc0a2bb4559dd30a8504d94ce40f334e7eaa75abd26624",
+    "intermediate_value_interfaces_redacted": "c8a9eab281d8b31a37946962d6e2c391833e88dfe90cce5ef23e746ab6e196c0"
+  },
+  "tasks": [
+    "rank_nullity_target_redacted",
+    "intermediate_value_interfaces_redacted"
+  ],
+  "finished_at": "2026-07-19T20:54:36.194751+00:00",
+  "status": "completed",
+  "results": [
+    {
+      "task_id": "rank_nullity_target_redacted",
+      "family": "rank_nullity",
+      "depth": 1,
+      "frontier": "Quotient dimensions and the kernel-range equivalence remain available",
+      "final_declaration": "RankNullity.tested_rank_nullity",
+      "verification_declaration": "RankNullity.benchmark_check_rank_nullity",
+      "trial": 1,
+      "model": "gpt-5.6-sol",
+      "passed": true,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 8625,
+        "output_tokens": 1474
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 32.985,
+          "compile_seconds": 7.515,
+          "compiled": true,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 8625,
+            "cached_input_tokens": 5888,
+            "output_tokens": 1474,
+            "reasoning_output_tokens": 1369
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "rank_nullity_target_redacted",
+      "family": "rank_nullity",
+      "depth": 1,
+      "frontier": "Quotient dimensions and the kernel-range equivalence remain available",
+      "final_declaration": "RankNullity.tested_rank_nullity",
+      "verification_declaration": "RankNullity.benchmark_check_rank_nullity",
+      "trial": 2,
+      "model": "gpt-5.6-sol",
+      "passed": true,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 8475,
+        "output_tokens": 1659
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 38.078,
+          "compile_seconds": 7.204,
+          "compiled": true,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 8475,
+            "cached_input_tokens": 0,
+            "output_tokens": 1659,
+            "reasoning_output_tokens": 1552
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "intermediate_value_interfaces_redacted",
+      "family": "intermediate_value",
+      "depth": 2,
+      "frontier": "Connectedness and closed-order primitives remain; local IVT interfaces are absent",
+      "final_declaration": "IntermediateValue.tested_intermediate_value",
+      "verification_declaration": "IntermediateValue.benchmark_check_intermediate_value",
+      "trial": 1,
+      "model": "gpt-5.6-sol",
+      "passed": false,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 8531,
+        "output_tokens": 6651
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 152.719,
+          "compile_seconds": 6.719,
+          "compiled": false,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 8531,
+            "cached_input_tokens": 5888,
+            "output_tokens": 6651,
+            "reasoning_output_tokens": 6214
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "intermediate_value_interfaces_redacted",
+      "family": "intermediate_value",
+      "depth": 2,
+      "frontier": "Connectedness and closed-order primitives remain; local IVT interfaces are absent",
+      "final_declaration": "IntermediateValue.tested_intermediate_value",
+      "verification_declaration": "IntermediateValue.benchmark_check_intermediate_value",
+      "trial": 2,
+      "model": "gpt-5.6-sol",
+      "passed": false,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 27396,
+        "output_tokens": 5135
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 130.75,
+          "compile_seconds": 7.031,
+          "compiled": false,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 27396,
+            "cached_input_tokens": 15872,
+            "output_tokens": 5135,
+            "reasoning_output_tokens": 4930
+          }
+        }
+      ]
+    }
+  ],
+  "infrastructure_failures": [],
+  "passed": 2,
+  "total_completed": 4,
+  "total_requested": 4
+}

@@ -1,0 +1,2 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\rank_nullity_target_redacted\trial_1\attempt_1.lean:21:2: error(lean.unknownIdentifier): Unknown constant `LinearMap.finrank_range_add_finrank_ker`
+'RankNullity.benchmark_check_rank_nullity' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

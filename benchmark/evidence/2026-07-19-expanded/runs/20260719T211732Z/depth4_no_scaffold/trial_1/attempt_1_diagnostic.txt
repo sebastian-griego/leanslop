@@ -1,0 +1,5 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T211732Z\depth4_no_scaffold\trial_1\attempt_1.lean:66:17: error(lean.invalidField): Invalid field `toLinearMap`: The environment does not contain `LinearPMap.toLinearMap`, so it is not possible to project the field `toLinearMap` from an expression
+  f
+of type `E →ₗ.[ℝ] ℝ`
+C:\Users\sebas\leanslop\benchmark\results\20260719T211732Z\depth4_no_scaffold\trial_1\attempt_1.lean:283:15: error: unexpected token 'at'; expected command
+'Depth4.benchmark_check_hahn_banach' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

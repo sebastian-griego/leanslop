@@ -1,0 +1,10 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T204811Z\intermediate_value_interfaces_redacted\trial_2\attempt_1.lean:26:24: error(lean.invalidField): Invalid field `ordConnected`: The environment does not contain `Function.ordConnected`, so it is not possible to project the field `ordConnected` from an expression
+  IsPreconnected.image hs f hf
+of type
+  ∀ (u v : Set α),
+    IsOpen[inst✝¹] u →
+      IsOpen[inst✝¹] v → f '' s ⊆ u ∪ v → (f '' s ∩ u).Nonempty → (f '' s ∩ v).Nonempty → (f '' s ∩ (u ∩ v)).Nonempty
+'IntermediateValue.benchmark_check_intermediate_value' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

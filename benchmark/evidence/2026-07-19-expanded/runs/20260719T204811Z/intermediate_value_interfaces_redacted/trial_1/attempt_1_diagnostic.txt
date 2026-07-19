@@ -1,0 +1,12 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T204811Z\intermediate_value_interfaces_redacted\trial_1\attempt_1.lean:49:22: error: Application type mismatch: The argument
+  hzgt
+has type
+  z ∈ Iio y ∩ Ioi y
+but is expected to have type
+  ?m.201 < ?m.200
+in the application
+  lt_asymm ?m.202 hzgt
+'IntermediateValue.benchmark_check_intermediate_value' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

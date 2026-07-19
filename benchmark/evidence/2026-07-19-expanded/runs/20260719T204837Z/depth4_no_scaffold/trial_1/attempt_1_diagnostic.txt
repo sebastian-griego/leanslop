@@ -1,0 +1,2 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T204837Z\depth4_no_scaffold\trial_1\attempt_1.lean:26:8: error(lean.unknownIdentifier): Unknown constant `LinearPMap.exists_extension_of_le`
+'Depth4.benchmark_check_hahn_banach' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

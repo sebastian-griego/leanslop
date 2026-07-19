@@ -23,7 +23,32 @@ TASK_DIR = ROOT / "benchmark" / "tasks"
 RESULTS_DIR = ROOT / "benchmark" / "results"
 MARKER = "__MODEL_COMPLETION__"
 FORBIDDEN = re.compile(r"\b(sorry|admit|axiom|opaque|unsafe)\b", re.IGNORECASE)
+FORBIDDEN_META = re.compile(
+    r"\b(native_decide|run_tac|by_elab|include_str|implemented_by|extern|"
+    r"elab|elab_rules|syntax|macro|macro_rules|initialize|builtin_initialize|"
+    r"set_option|attribute|unsafeCast|ofReduceBool|Lean|IO|System|dbg_trace|"
+    r"trace_state|logInfo|guard_msgs)\b",
+    flags=re.IGNORECASE,
+)
+FORBIDDEN_COMMAND = re.compile(
+    r"^\s*(?:#|import\b|namespace\b|end\b|elab\b|syntax\b|macro\b|"
+    r"initialize\b|builtin_initialize\b|set_option\b|attribute\b|section\b)",
+    flags=re.MULTILINE,
+)
+TOOL_STDERR = re.compile(
+    r"codex_core::tools::router|patch rejected:", flags=re.IGNORECASE
+)
 TRUSTED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
+MODEL_TIMEOUT_SECONDS = 900
+COMPILER_TIMEOUT_SECONDS = 180
+SENSITIVE_COMPILER_ENV = re.compile(
+    r"(?:API_KEY|TOKEN|SECRET|PASSWORD|PRIVATE_KEY|ACCESS_KEY|CREDENTIAL)",
+    flags=re.IGNORECASE,
+)
+
+
+class CompilerTimeoutError(RuntimeError):
+    """The verifier did not return a proof result within its infrastructure cap."""
 
 
 @dataclass(frozen=True)
@@ -34,6 +59,7 @@ class Task:
     final_declaration: str
     verification_declaration: str
     supplied_axioms: tuple[str, ...] = ()
+    family: str = "hahn_banach"
 
     @property
     def path(self) -> Path:
@@ -47,6 +73,38 @@ TASKS = (
         "Standard real arithmetic and tactics",
         "Control.tested_shallow_control",
         "Control.benchmark_check_control",
+        family="control",
+    ),
+    Task(
+        "baseline_hahn_banach_available",
+        0,
+        "The original mathlib Hahn-Banach theorem is imported and named",
+        "BaselineHahnBanach.tested_hahn_banach",
+        "BaselineHahnBanach.benchmark_check_hahn_banach",
+    ),
+    Task(
+        "control_hahn_banach_premise_available",
+        0,
+        "A renamed Hahn-Banach theorem with the exact target signature is supplied",
+        "ControlHahnBanach.tested_hahn_banach",
+        "ControlHahnBanach.benchmark_check_hahn_banach",
+        ("provided_hahn_banach",),
+    ),
+    Task(
+        "rank_nullity_target_redacted",
+        1,
+        "Quotient dimensions and the kernel-range equivalence remain available",
+        "RankNullity.tested_rank_nullity",
+        "RankNullity.benchmark_check_rank_nullity",
+        family="rank_nullity",
+    ),
+    Task(
+        "intermediate_value_interfaces_redacted",
+        2,
+        "Connectedness and closed-order primitives remain; local IVT interfaces are absent",
+        "IntermediateValue.tested_intermediate_value",
+        "IntermediateValue.benchmark_check_intermediate_value",
+        family="intermediate_value",
     ),
     Task(
         "depth1_riesz_available",
@@ -90,9 +148,9 @@ The code replaces one marker inside a fixed file. Do not emit imports, namespace
 commands, `end`, markdown fences, prose, or changes to supplied declarations.
 You may define helper lemmas and the required theorems. You must not use
 `sorry`, `admit`, `axiom`, `opaque`, `unsafe`, or any equivalent escape hatch.
-The original Mathlib.Analysis.Convex.Cone.Extension module is deliberately not
-imported, so its Riesz and Hahn-Banach declarations are unavailable. Work only
-from the shown imports, supplied frontier axiom (if any), and compiler feedback.
+Work only from the shown imports, any supplied frontier declaration, and
+compiler feedback. Do not assume that declarations from an omitted source
+module remain available.
 """
 
 
@@ -108,6 +166,14 @@ def key_free_environment() -> tuple[dict[str, str], list[str]]:
     removed = sorted(
         name for name in environment if name.upper().endswith("_API_KEY")
     )
+    for name in removed:
+        environment.pop(name, None)
+    return environment, removed
+
+
+def compiler_environment() -> tuple[dict[str, str], list[str]]:
+    environment = os.environ.copy()
+    removed = sorted(name for name in environment if SENSITIVE_COMPILER_ENV.search(name))
     for name in removed:
         environment.pop(name, None)
     return environment, removed
@@ -169,6 +235,20 @@ def repository_commit() -> str | None:
         check=False,
     )
     return process.stdout.strip() if process.returncode == 0 else None
+
+
+def repository_status() -> str:
+    process = subprocess.run(
+        ["git", "status", "--short"],
+        cwd=ROOT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        capture_output=True,
+        timeout=30,
+        check=False,
+    )
+    return process.stdout.strip() if process.returncode == 0 else "unavailable"
 
 
 def mathlib_metadata() -> dict[str, str]:
@@ -249,7 +329,7 @@ def codex_message(
         encoding="utf-8",
         errors="replace",
         capture_output=True,
-        timeout=900,
+        timeout=MODEL_TIMEOUT_SECONDS,
         check=False,
         env=environment,
     )
@@ -267,15 +347,19 @@ def codex_message(
     tool_events = []
     usage = {}
     for event in events:
-        if event.get("type") == "item.completed":
+        if event.get("type") in {"item.started", "item.completed", "item.failed"}:
             item = event.get("item", {})
             if item.get("type") == "agent_message":
-                text_parts.append(item.get("text", ""))
+                if event.get("type") == "item.completed":
+                    text_parts.append(item.get("text", ""))
             elif item.get("type") not in {"reasoning", "todo_list"}:
-                tool_events.append(item)
+                tool_events.append(
+                    {"event_type": event.get("type"), "item": item}
+                )
         elif event.get("type") == "turn.completed":
             usage = event.get("usage", {})
 
+    tool_stderr_markers = TOOL_STDERR.findall(process.stderr)
     raw = {
         "command_model": model,
         "returncode": process.returncode,
@@ -283,6 +367,7 @@ def codex_message(
         "stderr": process.stderr,
         "unparsed_stdout_lines": parse_errors,
         "tool_events": tool_events,
+        "tool_stderr_markers": tool_stderr_markers,
         "api_key_variables_removed": removed_key_variables,
     }
     if process.returncode != 0:
@@ -294,9 +379,11 @@ def codex_message(
 
 
 def extract_completion(text: str) -> str:
-    match = re.search(r"<lean>\s*(.*?)\s*</lean>", text, flags=re.DOTALL)
+    if text.count("<lean>") != 1 or text.count("</lean>") != 1:
+        raise ValueError("response was not exactly one <lean>...</lean> block")
+    match = re.fullmatch(r"\s*<lean>\s*(.*?)\s*</lean>\s*", text, flags=re.DOTALL)
     if not match:
-        raise ValueError("response did not contain <lean>...</lean>")
+        raise ValueError("response was not exactly one <lean>...</lean> block")
     return match.group(1).strip() + "\n"
 
 
@@ -304,27 +391,54 @@ def validate_completion(completion: str) -> str | None:
     match = FORBIDDEN.search(completion)
     if match:
         return f"completion contains forbidden token: {match.group(1)}"
-    if re.search(r"^\s*(import|namespace|end)\b", completion, flags=re.MULTILINE):
-        return "completion changes the fixed import or namespace structure"
+    if match := FORBIDDEN_META.search(completion):
+        return f"completion contains forbidden meta or I/O token: {match.group(1)}"
+    if FORBIDDEN_COMMAND.search(completion):
+        return "completion contains a forbidden command or changes fixed structure"
     return None
 
 
-def reported_axioms(task: Task, output: str) -> set[str] | None:
-    pattern = re.compile(
-        rf"'{re.escape(task.verification_declaration)}' depends on axioms: \[(.*?)\]",
+def validate_task_completion(task: Task, completion: str) -> str | None:
+    if validation_error := validate_completion(completion):
+        return validation_error
+    short_name = task.final_declaration.rsplit(".", 1)[-1]
+    declaration = re.compile(
+        rf"^\s*(?:(?:private|protected)\s+)?"
+        rf"(?:theorem|lemma|def|abbrev)\s+{re.escape(short_name)}"
+        rf"(?=\s|\(|\[|\{{|:)",
+        flags=re.MULTILINE,
+    )
+    if len(declaration.findall(completion)) != 1:
+        return f"completion must declare `{short_name}` exactly once"
+    verification_name = task.verification_declaration.rsplit(".", 1)[-1]
+    if re.search(rf"\b{re.escape(verification_name)}\b", completion):
+        return "completion attempts to shadow or reference the fixed verifier"
+    return None
+
+
+def reported_axioms(task: Task, stdout: str) -> set[str] | None:
+    report_pattern = re.compile(
+        rf"\s*'{re.escape(task.verification_declaration)}' "
+        rf"(?:(?:depends on axioms: \[(?P<axioms>[^\]]*)\])|"
+        rf"(?:does not depend on any axioms))\s*",
         flags=re.DOTALL,
     )
-    match = pattern.search(output)
-    if match:
-        return {name.strip() for name in match.group(1).split(",") if name.strip()}
-    if f"'{task.verification_declaration}' does not depend on any axioms" in output:
+    match = report_pattern.fullmatch(stdout)
+    if not match:
+        return None
+    if match.group("axioms") is None:
         return set()
-    return None
+    return {
+        name.strip()
+        for name in match.group("axioms").split(",")
+        if name.strip()
+    }
 
 
 def compile_source(task: Task, source_path: Path) -> tuple[bool, str, float]:
     started = time.monotonic()
     try:
+        environment, _ = compiler_environment()
         process = subprocess.run(
             ["lake", "env", "lean", str(source_path)],
             cwd=ROOT,
@@ -332,18 +446,24 @@ def compile_source(task: Task, source_path: Path) -> tuple[bool, str, float]:
             encoding="utf-8",
             errors="replace",
             capture_output=True,
-            timeout=180,
+            timeout=COMPILER_TIMEOUT_SECONDS,
             check=False,
+            env=environment,
         )
         output = (process.stdout + process.stderr).strip()
         passed = process.returncode == 0
         if passed:
-            axioms = reported_axioms(task, output)
-            allowed_axioms = TRUSTED_AXIOMS | set(task.supplied_axioms)
-            if axioms is None:
+            if process.stderr.strip():
                 passed = False
-                output += "\nRejected: verifier could not read the final axiom report."
-            elif unexpected := axioms - allowed_axioms:
+                output += "\nRejected: successful compilation produced stderr output."
+            axioms = reported_axioms(task, process.stdout) if passed else None
+            allowed_axioms = TRUSTED_AXIOMS | set(task.supplied_axioms)
+            if passed and axioms is None:
+                passed = False
+                output += (
+                    "\nRejected: stdout was not exactly one final axiom report."
+                )
+            elif passed and (unexpected := axioms - allowed_axioms):
                 passed = False
                 output += (
                     "\nRejected: final declaration depends on unexpected axioms: "
@@ -351,15 +471,23 @@ def compile_source(task: Task, source_path: Path) -> tuple[bool, str, float]:
                 )
         return passed, output, time.monotonic() - started
     except subprocess.TimeoutExpired as error:
-        output = ((error.stdout or "") + (error.stderr or "")).strip()
-        elapsed = time.monotonic() - started
-        return False, f"{output}\nCompilation timed out after 180 seconds.", elapsed
+        def timeout_text(value: str | bytes | None) -> str:
+            if isinstance(value, bytes):
+                return value.decode("utf-8", errors="replace")
+            return value or ""
+
+        output = (timeout_text(error.stdout) + timeout_text(error.stderr)).strip()
+        raise CompilerTimeoutError(
+            f"{output}\nCompilation timed out after "
+            f"{COMPILER_TIMEOUT_SECONDS} seconds."
+        )
 
 
 def initial_prompt(task: Task, template: str) -> str:
     return f"""\
 Task: {task.task_id}
-Redaction depth: {task.depth}
+Benchmark family: {task.family}
+Family-specific redaction tier: {task.depth}
 Available frontier: {task.frontier}
 
 Replace the literal marker `{MARKER}` with declarations that satisfy every
@@ -416,29 +544,44 @@ def run_trial(
     with tempfile.TemporaryDirectory(prefix="leanslop_codex_") as isolated:
         isolated_dir = Path(isolated)
         for attempt_number in range(1, max_attempts + 1):
+            transcript_sha256 = hashlib.sha256(
+                render_transcript(messages).encode("utf-8")
+            ).hexdigest()
             model_started = time.monotonic()
             text, usage, raw_response = codex_message(model, messages, isolated_dir)
             model_seconds = time.monotonic() - model_started
             token_totals["input_tokens"] += int(usage.get("input_tokens", 0))
             token_totals["output_tokens"] += int(usage.get("output_tokens", 0))
 
-            (trial_dir / f"attempt_{attempt_number}_response.json").write_text(
-                json.dumps(raw_response, indent=2, ensure_ascii=False) + "\n",
-                encoding="utf-8",
+            raw_response_bytes = (
+                json.dumps(raw_response, indent=2, ensure_ascii=False) + "\n"
+            ).encode("utf-8")
+            (trial_dir / f"attempt_{attempt_number}_response.json").write_bytes(
+                raw_response_bytes
             )
 
-            if raw_response["tool_events"]:
+            tool_attempts = list(raw_response["tool_events"]) + [
+                {"event_type": "stderr", "marker": marker}
+                for marker in raw_response["tool_stderr_markers"]
+            ]
+            protocol_errors = raw_response["unparsed_stdout_lines"]
+            stop_after_attempt = bool(tool_attempts or protocol_errors)
+            if tool_attempts:
                 completion = ""
                 validation_error = (
-                    "Codex used prohibited tools: "
-                    + ", ".join(
-                        str(item.get("type")) for item in raw_response["tool_events"]
-                    )
+                    "Codex attempted prohibited tool activity: "
+                    + json.dumps(tool_attempts, ensure_ascii=False)
+                )
+            elif protocol_errors:
+                completion = ""
+                validation_error = (
+                    "Codex emitted unparsed protocol output: "
+                    + json.dumps(protocol_errors, ensure_ascii=False)
                 )
             else:
                 try:
                     completion = extract_completion(text)
-                    validation_error = validate_completion(completion)
+                    validation_error = validate_task_completion(task, completion)
                 except ValueError as error:
                     completion = ""
                     validation_error = str(error)
@@ -453,9 +596,9 @@ def run_trial(
                 source_path.write_text(source, encoding="utf-8")
                 compiled, compiler_output, compile_seconds = compile_source(task, source_path)
 
-            (trial_dir / f"attempt_{attempt_number}_diagnostic.txt").write_text(
-                compiler_output + "\n",
-                encoding="utf-8",
+            diagnostic_bytes = (compiler_output + "\n").encode("utf-8")
+            (trial_dir / f"attempt_{attempt_number}_diagnostic.txt").write_bytes(
+                diagnostic_bytes
             )
             attempts.append(
                 {
@@ -465,11 +608,29 @@ def run_trial(
                     "compiled": compiled,
                     "validation_error": validation_error,
                     "usage": usage,
+                    "transcript_sha256": transcript_sha256,
+                    "raw_response_sha256": hashlib.sha256(
+                        raw_response_bytes
+                    ).hexdigest(),
+                    "completion_sha256": (
+                        hashlib.sha256(completion.encode("utf-8")).hexdigest()
+                        if completion
+                        else None
+                    ),
+                    "source_sha256": (
+                        file_sha256(source_path)
+                        if not validation_error
+                        else None
+                    ),
+                    "diagnostic_sha256": hashlib.sha256(
+                        diagnostic_bytes
+                    ).hexdigest(),
+                    "tool_attempts": tool_attempts,
                 }
             )
             if compiled:
                 break
-            if raw_response["tool_events"]:
+            if stop_after_attempt:
                 break
 
             messages.extend(
@@ -484,6 +645,7 @@ def run_trial(
 
     result = {
         "task_id": task.task_id,
+        "family": task.family,
         "depth": task.depth,
         "frontier": task.frontier,
         "final_declaration": task.final_declaration,
@@ -511,7 +673,7 @@ def positive_integer(value: str) -> int:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="gpt-5.4")
+    parser.add_argument("--model", default="gpt-5.6-sol")
     parser.add_argument("--trials", type=positive_integer, default=1)
     parser.add_argument("--max-attempts", type=positive_integer, default=3)
     parser.add_argument(
@@ -526,6 +688,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     removed_key_variables = require_chatgpt_authentication()
+    _, compiler_removed_variables = compiler_environment()
     selected = [task for task in TASKS if not args.task or task.task_id in args.task]
     key_free_env, _ = key_free_environment()
     started_at = datetime.now(timezone.utc)
@@ -535,8 +698,14 @@ def main() -> int:
         "provider": "Codex CLI with ChatGPT authentication",
         "trials": args.trials,
         "max_attempts": args.max_attempts,
-        "api_keys": "not used; *_API_KEY variables removed from Codex subprocesses",
+        "reasoning_effort": "high",
+        "model_timeout_seconds": MODEL_TIMEOUT_SECONDS,
+        "compiler_timeout_seconds": COMPILER_TIMEOUT_SECONDS,
+        "api_keys": (
+            "not used; *_API_KEY variables removed from Codex and Lean subprocesses"
+        ),
         "api_key_variables_removed": removed_key_variables,
+        "compiler_sensitive_variables_removed": compiler_removed_variables,
         "codex_cli_version": command_output(
             [codex_executable(), "--version"], key_free_env
         ),
@@ -544,7 +713,14 @@ def main() -> int:
         "lean_version": command_output(["lake", "env", "lean", "--version"]),
         "mathlib": mathlib_metadata(),
         "benchmark_git_commit": repository_commit(),
+        "benchmark_git_status": repository_status(),
         "runner_sha256": file_sha256(Path(__file__).resolve()),
+        "validator_sha256": file_sha256(
+            ROOT / "benchmark" / "validate_templates.py"
+        ),
+        "system_prompt_sha256": hashlib.sha256(
+            SYSTEM_PROMPT.encode("utf-8")
+        ).hexdigest(),
         "task_sha256": {task.task_id: file_sha256(task.path) for task in selected},
         "tasks": [task.task_id for task in selected],
     }

@@ -1,0 +1,15 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth1_riesz_available\trial_2\attempt_1.lean:35:30: error: unexpected token 'where'; expected ':=' or '|'
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth1_riesz_available\trial_2\attempt_1.lean:35:6: error: Missing cases:
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth1_riesz_available\trial_2\attempt_1.lean:29:69: error: unsolved goals
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+C : ConvexCone ℝ (E × ℝ) := nomatch
+⊢ ∃ g, (∀ (x : ↥f.domain), g ↑x = ↑f x) ∧ ∀ (x : E), g x ≤ N x
+'Depth1.benchmark_check_hahn_banach' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

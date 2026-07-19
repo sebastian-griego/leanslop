@@ -1,0 +1,70 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T211042Z\depth2_maximal_extension_available\trial_1\attempt_2.lean:45:14: error: Type mismatch: After simplification, term
+  ha
+ has type
+  N a.1 < a.2
+but is expected to have type
+  a = 0 ∨ N a.1 < a.2
+C:\Users\sebas\leanslop\benchmark\results\20260719T211042Z\depth2_maximal_extension_available\trial_1\attempt_2.lean:51:21: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+r : { c // 0 ≤ c }
+hr : E × ℝ
+z : hr ∈ {z | z = 0 ∨ N z.1 < z.2}
+⊢ r • hr ∈ {z | z = 0 ∨ N z.1 < z.2}
+C:\Users\sebas\leanslop\benchmark\results\20260719T211042Z\depth2_maximal_extension_available\trial_1\attempt_2.lean:64:22: error: unsolved goals
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+s : PointedCone ℝ (E × ℝ) :=
+  let __AddSubmonoid := { carrier := {z | z = 0 ∨ N z.1 < z.2}, add_mem' := ⋯, zero_mem' := ⋯ };
+  { toAddSubmonoid := __AddSubmonoid, smul_mem' := ⋯ }
+x y : ↥(f.domain.prod ⊤)
+⊢ -↑f ⟨(↑x).1 + (↑y).1, ⋯⟩ = -↑f ⟨(↑x).1, ⋯⟩ + -↑f ⟨(↑y).1, ⋯⟩
+C:\Users\sebas\leanslop\benchmark\results\20260719T211042Z\depth2_maximal_extension_available\trial_1\attempt_2.lean:67:23: error: unsolved goals
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+s : PointedCone ℝ (E × ℝ) :=
+  let __AddSubmonoid := { carrier := {z | z = 0 ∨ N z.1 < z.2}, add_mem' := ⋯, zero_mem' := ⋯ };
+  { toAddSubmonoid := __AddSubmonoid, smul_mem' := ⋯ }
+r : ℝ
+x : ↥(f.domain.prod ⊤)
+⊢ ↑f ⟨r • (↑x).1, ⋯⟩ = r * ↑f ⟨(↑x).1, ⋯⟩
+C:\Users\sebas\leanslop\benchmark\results\20260719T211042Z\depth2_maximal_extension_available\trial_1\attempt_2.lean:126:4: error: Type mismatch: After simplification, term
+  h
+ has type
+  Q (0, t) = t - ↑f ⟨0, ⋯⟩
+but is expected to have type
+  Q (0, t) = t
+C:\Users\sebas\leanslop\benchmark\results\20260719T211042Z\depth2_maximal_extension_available\trial_1\attempt_2.lean:66:60: warning: This simp argument is unused:
+  add_comm
+
+Hint: Omit it from the simp argument list.
+  simp [sub_eq_add_neg, add_assoc, add_left_comm,̵ ̵a̵d̵d̵_̵c̵o̵m̵m̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Depth2.benchmark_check_hahn_banach' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ provided_exists_top,
+ Quot.sound]

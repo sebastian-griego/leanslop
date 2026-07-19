@@ -1,0 +1,57 @@
+{
+  "task_id": "depth2_maximal_extension_available",
+  "family": "hahn_banach",
+  "depth": 2,
+  "frontier": "A supplied maximal partial extension theorem",
+  "final_declaration": "Depth2.tested_hahn_banach",
+  "verification_declaration": "Depth2.benchmark_check_hahn_banach",
+  "trial": 1,
+  "model": "gpt-5.6-sol",
+  "passed": false,
+  "attempts_used": 3,
+  "token_totals": {
+    "input_tokens": 78958,
+    "output_tokens": 32370
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model_seconds": 353.844,
+      "compile_seconds": 8.25,
+      "compiled": false,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 8753,
+        "cached_input_tokens": 5888,
+        "output_tokens": 14903,
+        "reasoning_output_tokens": 12745
+      }
+    },
+    {
+      "attempt": 2,
+      "model_seconds": 234.468,
+      "compile_seconds": 10.172,
+      "compiled": false,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 48639,
+        "cached_input_tokens": 30208,
+        "output_tokens": 10991,
+        "reasoning_output_tokens": 8636
+      }
+    },
+    {
+      "attempt": 3,
+      "model_seconds": 135.859,
+      "compile_seconds": 7.875,
+      "compiled": false,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 21566,
+        "cached_input_tokens": 7936,
+        "output_tokens": 6476,
+        "reasoning_output_tokens": 4082
+      }
+    }
+  ]
+}

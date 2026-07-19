@@ -1,0 +1,31 @@
+{
+  "task_id": "depth3_one_step_available",
+  "family": "hahn_banach",
+  "depth": 3,
+  "frontier": "A supplied one-dimensional extension step",
+  "final_declaration": "Depth3.tested_hahn_banach",
+  "verification_declaration": "Depth3.benchmark_check_hahn_banach",
+  "trial": 1,
+  "model": "gpt-5.6-sol",
+  "passed": false,
+  "attempts_used": 1,
+  "token_totals": {
+    "input_tokens": 19431,
+    "output_tokens": 11563
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model_seconds": 328.984,
+      "compile_seconds": 7.438,
+      "compiled": false,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 19431,
+        "cached_input_tokens": 10752,
+        "output_tokens": 11563,
+        "reasoning_output_tokens": 11324
+      }
+    }
+  ]
+}

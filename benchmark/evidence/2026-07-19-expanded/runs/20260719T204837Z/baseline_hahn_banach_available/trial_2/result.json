@@ -1,0 +1,31 @@
+{
+  "task_id": "baseline_hahn_banach_available",
+  "family": "hahn_banach",
+  "depth": 0,
+  "frontier": "The original mathlib Hahn-Banach theorem is imported and named",
+  "final_declaration": "BaselineHahnBanach.tested_hahn_banach",
+  "verification_declaration": "BaselineHahnBanach.benchmark_check_hahn_banach",
+  "trial": 2,
+  "model": "gpt-5.6-sol",
+  "passed": true,
+  "attempts_used": 1,
+  "token_totals": {
+    "input_tokens": 8624,
+    "output_tokens": 881
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model_seconds": 20.937,
+      "compile_seconds": 6.797,
+      "compiled": true,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 8624,
+        "cached_input_tokens": 5888,
+        "output_tokens": 881,
+        "reasoning_output_tokens": 708
+      }
+    }
+  ]
+}

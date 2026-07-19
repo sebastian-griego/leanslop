@@ -1,0 +1,37 @@
+{
+  "task_id": "control_hahn_banach_premise_available",
+  "family": "hahn_banach",
+  "depth": 0,
+  "frontier": "A renamed Hahn-Banach theorem with the exact target signature is supplied",
+  "final_declaration": "ControlHahnBanach.tested_hahn_banach",
+  "verification_declaration": "ControlHahnBanach.benchmark_check_hahn_banach",
+  "trial": 2,
+  "model": "gpt-5.6-sol",
+  "passed": true,
+  "attempts_used": 1,
+  "token_totals": {
+    "input_tokens": 8799,
+    "output_tokens": 170
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model_seconds": 6.484,
+      "compile_seconds": 6.735,
+      "compiled": true,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 8799,
+        "cached_input_tokens": 2816,
+        "output_tokens": 170,
+        "reasoning_output_tokens": 0
+      },
+      "transcript_sha256": "aec188c46d75f724ecf77ecb96aa77cb7f2c445de6fbf3000e50dad0d4e3a019",
+      "raw_response_sha256": "ad0f2bcae028b42e474e6ece60f6b351802b1c5e1a61561e03afdb9dde43494c",
+      "completion_sha256": "136f335f22e8987de83d3a66023ec636280cdf0a0c382d8ad043ad0109b82448",
+      "source_sha256": "87bbc08fbf82ba95f0946ebbc0ee44fa9a4448d9673419a060b0b040d7e1740e",
+      "diagnostic_sha256": "da958eda176af833b2fe829dbef0fcb4e91b9fba6028b561bd7ed72e1468508d",
+      "tool_attempts": []
+    }
+  ]
+}

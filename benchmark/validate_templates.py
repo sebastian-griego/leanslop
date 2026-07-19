@@ -10,27 +10,55 @@ from pathlib import Path
 import run_benchmark as runner
 
 
+MATHLIB_ROOT = runner.ROOT / ".lake" / "packages" / "mathlib" / "Mathlib"
 EXTENSION_SOURCE = (
-    runner.ROOT
-    / ".lake"
-    / "packages"
-    / "mathlib"
-    / "Mathlib"
-    / "Analysis"
-    / "Convex"
-    / "Cone"
-    / "Extension.lean"
+    MATHLIB_ROOT / "Analysis" / "Convex" / "Cone" / "Extension.lean"
 )
-NARROW_IMPORTS = """\
+FINITE_DIMENSIONAL_SOURCE = (
+    MATHLIB_ROOT / "LinearAlgebra" / "FiniteDimensional" / "Lemmas.lean"
+)
+INTERMEDIATE_VALUE_SOURCE = (
+    MATHLIB_ROOT / "Topology" / "Order" / "IntermediateValue.lean"
+)
+HAHN_IMPORTS = """\
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Geometry.Convex.Cone.Pointed
 import Mathlib.LinearAlgebra.LinearPMap
 """
-REDACTED_DECLARATIONS = (
-    "exists_extension_of_le_sublinear",
-    "riesz_extension",
-    "RieszExtension.exists_top",
-    "RieszExtension.step",
+RANK_NULLITY_IMPORTS = """\
+import Mathlib.LinearAlgebra.Dimension.DivisionRing
+import Mathlib.LinearAlgebra.Dimension.FreeAndStrongRankCondition
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+"""
+INTERMEDIATE_VALUE_IMPORTS = """\
+import Mathlib.Order.Interval.Set.Image
+import Mathlib.Order.CompleteLatticeIntervals
+import Mathlib.Topology.Order.DenselyOrdered
+import Mathlib.Topology.Order.Monotone
+import Mathlib.Topology.Connected.TotallyDisconnected
+"""
+REDACTION_PROBES = (
+    (
+        HAHN_IMPORTS,
+        (
+            "exists_extension_of_le_sublinear",
+            "riesz_extension",
+            "RieszExtension.exists_top",
+            "RieszExtension.step",
+        ),
+    ),
+    (
+        RANK_NULLITY_IMPORTS,
+        ("LinearMap.finrank_range_add_finrank_ker",),
+    ),
+    (
+        INTERMEDIATE_VALUE_IMPORTS,
+        (
+            "intermediate_value_univ₂",
+            "IsPreconnected.intermediate_value₂",
+            "IsPreconnected.intermediate_value",
+        ),
+    ),
 )
 
 
@@ -41,15 +69,77 @@ def between(source: str, start: str, end: str) -> str:
 
 
 def reference_completions() -> dict[str, str]:
-    source = EXTENSION_SOURCE.read_text(encoding="utf-8")
-    step = between(source, "theorem step", "\ntheorem exists_top")
-    exists_top = between(source, "theorem exists_top", "\nend RieszExtension")
+    extension_source = EXTENSION_SOURCE.read_text(encoding="utf-8")
+    step = between(extension_source, "theorem step", "\ntheorem exists_top")
+    exists_top = between(
+        extension_source, "theorem exists_top", "\nend RieszExtension"
+    )
     riesz = between(
-        source,
+        extension_source,
         "theorem riesz_extension",
         "\n/-- **Hahn-Banach theorem**",
     )
-    hahn = source[source.index("theorem exists_extension_of_le_sublinear") :].strip() + "\n"
+    hahn = (
+        extension_source[
+            extension_source.index("theorem exists_extension_of_le_sublinear") :
+        ].strip()
+        + "\n"
+    )
+    hahn_signature = hahn.split(" := by", 1)[0]
+    baseline_hahn = (
+        hahn_signature.replace(
+            "theorem exists_extension_of_le_sublinear",
+            "theorem tested_hahn_banach",
+            1,
+        )
+        + " := exists_extension_of_le_sublinear f N N_hom N_add hf\n"
+    )
+
+    finite_source = FINITE_DIMENSIONAL_SOURCE.read_text(encoding="utf-8")
+    rank_nullity = between(
+        finite_source,
+        "theorem finrank_range_add_finrank_ker",
+        "\nlemma ker_ne_bot_of_finrank_lt",
+    ).replace(
+        "theorem finrank_range_add_finrank_ker",
+        "theorem tested_rank_nullity",
+        1,
+    )
+
+    intermediate_source = INTERMEDIATE_VALUE_SOURCE.read_text(encoding="utf-8")
+    intermediate_univ = between(
+        intermediate_source,
+        "theorem intermediate_value_univ₂",
+        "\ntheorem intermediate_value_univ₂_eventually₁",
+    ).replace(
+        "theorem intermediate_value_univ₂",
+        "theorem local_intermediate_value_univ₂",
+        1,
+    )
+    intermediate_on_set = between(
+        intermediate_source,
+        "theorem IsPreconnected.intermediate_value₂",
+        "\ntheorem IsPreconnected.intermediate_value₂_eventually₁",
+    ).replace(
+        "theorem IsPreconnected.intermediate_value₂",
+        "theorem local_intermediate_value₂",
+        1,
+    ).replace(
+        "@intermediate_value_univ₂",
+        "@local_intermediate_value_univ₂",
+    )
+    intermediate_value = between(
+        intermediate_source,
+        "theorem IsPreconnected.intermediate_value {",
+        "\ntheorem IsPreconnected.intermediate_value_Ico",
+    ).replace(
+        "theorem IsPreconnected.intermediate_value",
+        "theorem tested_intermediate_value",
+        1,
+    ).replace(
+        "hs.intermediate_value₂",
+        "local_intermediate_value₂ hs",
+    )
 
     local_step = step.replace("theorem step", "theorem local_step", 1)
     local_exists_from_step = exists_top.replace(
@@ -83,6 +173,19 @@ def reference_completions() -> dict[str, str]:
             "2 * x * y ≤ x ^ 2 + y ^ 2 := by\n"
             "  nlinarith [sq_nonneg (x - y)]\n"
         ),
+        "baseline_hahn_banach_available": baseline_hahn,
+        "control_hahn_banach_premise_available": (
+            hahn_signature.replace(
+                "theorem exists_extension_of_le_sublinear",
+                "theorem tested_hahn_banach",
+                1,
+            )
+            + " := provided_hahn_banach f N N_hom N_add hf\n"
+        ),
+        "rank_nullity_target_redacted": rank_nullity,
+        "intermediate_value_interfaces_redacted": (
+            intermediate_univ + "\n" + intermediate_on_set + "\n" + intermediate_value
+        ),
         "depth1_riesz_available": tested_from_provider,
         "depth2_maximal_extension_available": (
             local_riesz_from_provider + "\n" + tested_from_local_riesz
@@ -113,31 +216,34 @@ def main() -> int:
     failures = []
     with tempfile.TemporaryDirectory(prefix="leanslop_references_") as temporary:
         temporary_dir = Path(temporary)
-        for declaration in REDACTED_DECLARATIONS:
-            probe_path = temporary_dir / f"probe_{declaration.replace('.', '_')}.lean"
-            probe_path.write_text(
-                f"{NARROW_IMPORTS}\n#check {declaration}\n",
-                encoding="utf-8",
-            )
-            probe = subprocess.run(
-                ["lake", "env", "lean", str(probe_path)],
-                cwd=runner.ROOT,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
-                capture_output=True,
-                timeout=180,
-                check=False,
-            )
-            absent = probe.returncode != 0 and "Unknown identifier" in (
-                probe.stdout + probe.stderr
-            )
-            print(f"{declaration}: {'ABSENT' if absent else 'AVAILABLE'}")
-            if not absent:
-                failures.append(
-                    f"{declaration} was unexpectedly available\n"
-                    f"{probe.stdout}{probe.stderr}"
+        probe_number = 0
+        for imports, declarations in REDACTION_PROBES:
+            for declaration in declarations:
+                probe_number += 1
+                display_name = declaration.encode("ascii", "backslashreplace").decode()
+                probe_path = temporary_dir / f"probe_{probe_number}.lean"
+                probe_path.write_text(
+                    f"{imports}\n#check {declaration}\n",
+                    encoding="utf-8",
                 )
+                probe = subprocess.run(
+                    ["lake", "env", "lean", str(probe_path)],
+                    cwd=runner.ROOT,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    capture_output=True,
+                    timeout=180,
+                    check=False,
+                )
+                probe_output = probe.stdout + probe.stderr
+                absent = probe.returncode != 0 and "lean.unknownIdentifier" in probe_output
+                print(f"{display_name}: {'ABSENT' if absent else 'AVAILABLE'}")
+                if not absent:
+                    failures.append(
+                        f"{declaration} was unexpectedly available\n"
+                        f"{probe_output}"
+                    )
         for task in runner.TASKS:
             template = task.path.read_text(encoding="utf-8")
             source = template.replace(runner.MARKER, completions[task.task_id])

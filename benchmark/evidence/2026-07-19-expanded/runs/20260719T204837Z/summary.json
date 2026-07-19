@@ -1,0 +1,163 @@
+{
+  "started_at": "2026-07-19T20:48:37.547150+00:00",
+  "model": "gpt-5.6-sol",
+  "provider": "Codex CLI with ChatGPT authentication",
+  "trials": 2,
+  "max_attempts": 1,
+  "api_keys": "not used; *_API_KEY variables removed from Codex subprocesses",
+  "api_key_variables_removed": [
+    "ANTHROPIC_API_KEY",
+    "ARISTOTLE_API_KEY",
+    "SAM_API_KEY"
+  ],
+  "codex_cli_version": "codex-cli 0.144.6",
+  "lean_toolchain": "leanprover/lean4:v4.32.0",
+  "lean_version": "Lean (version 4.32.0, x86_64-w64-windows-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "mathlib": {
+    "input_revision": "v4.32.0",
+    "manifest_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+    "installed_commit": "81a5d257c8e410db227a6665ed08f64fea08e997"
+  },
+  "benchmark_git_commit": "2df07aff8b2b3567a3694d50300ebfd8978ebf47",
+  "runner_sha256": "d4e525c2d74ee1fecbca56d2324d01b9af7f20f17427bdac39bba3a69d7c93c3",
+  "task_sha256": {
+    "baseline_hahn_banach_available": "61db4da552788625834fb731249a398108360a3e5705c59a8dd0ca28f3104932",
+    "depth4_no_scaffold": "b1d3c7cb859cffd70d3aefe88b9b8b96965a71cfda1f82fc814f4d05e18bc0f1"
+  },
+  "tasks": [
+    "baseline_hahn_banach_available",
+    "depth4_no_scaffold"
+  ],
+  "finished_at": "2026-07-19T21:00:42.584308+00:00",
+  "status": "completed",
+  "results": [
+    {
+      "task_id": "baseline_hahn_banach_available",
+      "family": "hahn_banach",
+      "depth": 0,
+      "frontier": "The original mathlib Hahn-Banach theorem is imported and named",
+      "final_declaration": "BaselineHahnBanach.tested_hahn_banach",
+      "verification_declaration": "BaselineHahnBanach.benchmark_check_hahn_banach",
+      "trial": 1,
+      "model": "gpt-5.6-sol",
+      "passed": true,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 8626,
+        "output_tokens": 744
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 17.75,
+          "compile_seconds": 6.875,
+          "compiled": true,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 8626,
+            "cached_input_tokens": 5888,
+            "output_tokens": 744,
+            "reasoning_output_tokens": 568
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "baseline_hahn_banach_available",
+      "family": "hahn_banach",
+      "depth": 0,
+      "frontier": "The original mathlib Hahn-Banach theorem is imported and named",
+      "final_declaration": "BaselineHahnBanach.tested_hahn_banach",
+      "verification_declaration": "BaselineHahnBanach.benchmark_check_hahn_banach",
+      "trial": 2,
+      "model": "gpt-5.6-sol",
+      "passed": true,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 8624,
+        "output_tokens": 881
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 20.937,
+          "compile_seconds": 6.797,
+          "compiled": true,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 8624,
+            "cached_input_tokens": 5888,
+            "output_tokens": 881,
+            "reasoning_output_tokens": 708
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "depth4_no_scaffold",
+      "family": "hahn_banach",
+      "depth": 4,
+      "frontier": "Only the foundational imports; no Riesz/Hahn-Banach result",
+      "final_declaration": "Depth4.tested_hahn_banach",
+      "verification_declaration": "Depth4.benchmark_check_hahn_banach",
+      "trial": 1,
+      "model": "gpt-5.6-sol",
+      "passed": false,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 8631,
+        "output_tokens": 11210
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 317.39,
+          "compile_seconds": 7.235,
+          "compiled": false,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 8631,
+            "cached_input_tokens": 5888,
+            "output_tokens": 11210,
+            "reasoning_output_tokens": 11033
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "depth4_no_scaffold",
+      "family": "hahn_banach",
+      "depth": 4,
+      "frontier": "Only the foundational imports; no Riesz/Hahn-Banach result",
+      "final_declaration": "Depth4.tested_hahn_banach",
+      "verification_declaration": "Depth4.benchmark_check_hahn_banach",
+      "trial": 2,
+      "model": "gpt-5.6-sol",
+      "passed": false,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 27650,
+        "output_tokens": 14148
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 338.765,
+          "compile_seconds": 7.61,
+          "compiled": false,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 27650,
+            "cached_input_tokens": 15872,
+            "output_tokens": 14148,
+            "reasoning_output_tokens": 10657
+          }
+        }
+      ]
+    }
+  ],
+  "infrastructure_failures": [],
+  "passed": 2,
+  "total_completed": 4,
+  "total_requested": 4
+}

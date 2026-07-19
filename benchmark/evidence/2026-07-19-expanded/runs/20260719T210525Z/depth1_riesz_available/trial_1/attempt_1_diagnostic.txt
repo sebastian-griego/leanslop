@@ -1,0 +1,51 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:42:24: error: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+  y
+has type `Real.le✝ (N x.1) x.2` which is not a one-constructor inductive type.
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:42:37: error: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+  y
+has type `Real.le✝ (N x.1) x.2` which is not a one-constructor inductive type.
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:45:21: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+hN_zero : N 0 = 0
+c : { c // 0 ≤ c }
+hc : E × ℝ
+z : hc ∈ {z | N z.1 ≤ z.2}
+⊢ c • hc ∈ {z | N z.1 ≤ z.2}
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:57:6: error: `map_add'` is not a field of structure `LinearPMap`
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:60:6: error: `map_smul'` is not a field of structure `LinearPMap`
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:56:15: error: Type mismatch
+  fun x => ?m.246 - ↑f ⟨?m.250, ⋯⟩
+has type
+  ?m.244 → ℝ
+but is expected to have type
+  ↥(f.domain.prod ⊤) →ₗ[ℝ] ℝ
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:56:24: error: Invalid projection: Type of
+  x
+is not known; cannot resolve projection `1`
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:56:35: error: Invalid projection: Type of
+  x
+is not known; cannot resolve projection `1`
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:56:42: error: Invalid projection: Type of
+  x
+is not known; cannot resolve projection `2`
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:67:4: error: 'change' tactic failed, pattern
+  0 ≤ (↑x).2 - ↑f ⟨(↑x).1, ⋯⟩
+is not definitionally equal to target
+  0 ≤ ↑F x
+C:\Users\sebas\leanslop\benchmark\results\20260719T210525Z\depth1_riesz_available\trial_1\attempt_1.lean:73:6: error: 'change' tactic failed, pattern
+  N y.1 ≤ N y.1 - y.2 + y.2
+is not definitionally equal to target
+  ↑⟨(0, N y.1 - y.2), ⋯⟩ + y ∈ s
+'Depth1.benchmark_check_hahn_banach' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ provided_riesz_extension,
+ Quot.sound]

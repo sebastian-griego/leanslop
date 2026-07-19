@@ -1,0 +1,2 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T205809Z\depth3_one_step_available\trial_1\attempt_1.lean:32:14: error(lean.unknownIdentifier): Unknown constant `Real.exists_linear_map_extension`
+'Depth3.benchmark_check_hahn_banach' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

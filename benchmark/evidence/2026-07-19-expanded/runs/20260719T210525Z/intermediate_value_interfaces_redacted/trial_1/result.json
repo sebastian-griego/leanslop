@@ -1,0 +1,31 @@
+{
+  "task_id": "intermediate_value_interfaces_redacted",
+  "family": "intermediate_value",
+  "depth": 2,
+  "frontier": "Connectedness and closed-order primitives remain; local IVT interfaces are absent",
+  "final_declaration": "IntermediateValue.tested_intermediate_value",
+  "verification_declaration": "IntermediateValue.benchmark_check_intermediate_value",
+  "trial": 1,
+  "model": "gpt-5.5",
+  "passed": false,
+  "attempts_used": 1,
+  "token_totals": {
+    "input_tokens": 7970,
+    "output_tokens": 5712
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model_seconds": 104.953,
+      "compile_seconds": 6.313,
+      "compiled": false,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 7970,
+        "cached_input_tokens": 0,
+        "output_tokens": 5712,
+        "reasoning_output_tokens": 5178
+      }
+    }
+  ]
+}

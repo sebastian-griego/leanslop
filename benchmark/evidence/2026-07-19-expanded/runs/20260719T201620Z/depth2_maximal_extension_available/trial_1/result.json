@@ -1,0 +1,31 @@
+{
+  "task_id": "depth2_maximal_extension_available",
+  "family": "hahn_banach",
+  "depth": 2,
+  "frontier": "A supplied maximal partial extension theorem",
+  "final_declaration": "Depth2.tested_hahn_banach",
+  "verification_declaration": "Depth2.benchmark_check_hahn_banach",
+  "trial": 1,
+  "model": "gpt-5.6-sol",
+  "passed": false,
+  "attempts_used": 1,
+  "token_totals": {
+    "input_tokens": 18671,
+    "output_tokens": 14670
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model_seconds": 353.781,
+      "compile_seconds": 8.547,
+      "compiled": false,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 18671,
+        "cached_input_tokens": 7936,
+        "output_tokens": 14670,
+        "reasoning_output_tokens": 13058
+      }
+    }
+  ]
+}

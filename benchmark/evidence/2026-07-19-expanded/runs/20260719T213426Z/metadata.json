@@ -1,0 +1,35 @@
+{
+  "started_at": "2026-07-19T21:34:26.371520+00:00",
+  "model": "gpt-5.6-sol",
+  "provider": "Codex CLI with ChatGPT authentication",
+  "trials": 3,
+  "max_attempts": 1,
+  "reasoning_effort": "high",
+  "model_timeout_seconds": 900,
+  "compiler_timeout_seconds": 180,
+  "api_keys": "not used; *_API_KEY variables removed from Codex and Lean subprocesses",
+  "api_key_variables_removed": [
+    "ANTHROPIC_API_KEY",
+    "ARISTOTLE_API_KEY",
+    "SAM_API_KEY"
+  ],
+  "codex_cli_version": "codex-cli 0.144.6",
+  "lean_toolchain": "leanprover/lean4:v4.32.0",
+  "lean_version": "Lean (version 4.32.0, x86_64-w64-windows-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "mathlib": {
+    "input_revision": "v4.32.0",
+    "manifest_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+    "installed_commit": "81a5d257c8e410db227a6665ed08f64fea08e997"
+  },
+  "benchmark_git_commit": "2df07aff8b2b3567a3694d50300ebfd8978ebf47",
+  "benchmark_git_status": "M benchmark/run_benchmark.py\n M benchmark/validate_templates.py\n M benchmark/verify_evidence.py\n?? benchmark/curate_evidence.py\n?? benchmark/tasks/baseline_hahn_banach_available.lean.in\n?? benchmark/tasks/control_hahn_banach_premise_available.lean.in\n?? benchmark/tasks/intermediate_value_interfaces_redacted.lean.in\n?? benchmark/tasks/rank_nullity_target_redacted.lean.in",
+  "runner_sha256": "aa83f4ac36efc72e0ab5632011a690969b2e517721e5a01c7f0f1172cfa2b31d",
+  "validator_sha256": "dafaf90618c6e4e004968296db6ef3dbbfd282b9b14ef991ad7d48e3d629827a",
+  "system_prompt_sha256": "75d2fd619c8950c2fea1d7fc8add91d9f89aaa6b27e83dc6d413c8166dc285a8",
+  "task_sha256": {
+    "control_hahn_banach_premise_available": "991a3eee608769d79b65145a64f493a97b85ecd5ff9592eee398cd6fcdcdced6"
+  },
+  "tasks": [
+    "control_hahn_banach_premise_available"
+  ]
+}

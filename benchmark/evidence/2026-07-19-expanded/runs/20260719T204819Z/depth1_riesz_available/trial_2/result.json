@@ -1,0 +1,31 @@
+{
+  "task_id": "depth1_riesz_available",
+  "family": "hahn_banach",
+  "depth": 1,
+  "frontier": "A supplied M. Riesz extension theorem",
+  "final_declaration": "Depth1.tested_hahn_banach",
+  "verification_declaration": "Depth1.benchmark_check_hahn_banach",
+  "trial": 2,
+  "model": "gpt-5.6-sol",
+  "passed": false,
+  "attempts_used": 1,
+  "token_totals": {
+    "input_tokens": 8758,
+    "output_tokens": 16273
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model_seconds": 378.203,
+      "compile_seconds": 7.359,
+      "compiled": false,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 8758,
+        "cached_input_tokens": 0,
+        "output_tokens": 16273,
+        "reasoning_output_tokens": 14442
+      }
+    }
+  ]
+}

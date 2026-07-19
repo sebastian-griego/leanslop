@@ -1,0 +1,104 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:37:8: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:43:21: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+c : { c // 0 ≤ c }
+hc : E × ℝ
+x : hc ∈ {z | N z.1 ≤ z.2}
+⊢ c • hc ∈ {z | N z.1 ≤ z.2}
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:79:6: error: `toLinearMap` is not a field of structure `LinearPMap`
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:78:4: error: Fields missing: `toFun`
+
+Hint: Add missing fields:
+  
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲t̲o̲F̲u̲n̲ ̲:̲=̲ ̲_̲
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:85:8: error: 'change' tactic failed, pattern
+  0 ≤ (↑x).2 - ↑f ⟨(↑x).1, ⋯⟩
+is not definitionally equal to target
+  0 ≤ ↑p x
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:98:33: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:103:20: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:104:20: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:101:8: error: Type mismatch: After simplification, term
+  LinearPMap.map_add q
+    ⟨x, of_eq_true (Eq.trans (congrFun' (congrArg Membership.mem hqtop) x) Submodule.mem_top._simp_1)⟩
+    ⟨y, of_eq_true (Eq.trans (congrFun' (congrArg Membership.mem hqtop) y) Submodule.mem_top._simp_1)⟩
+ has type
+  @Eq ℝ (↑q (⟨x, ⋯⟩ + ⟨y, ⋯⟩)) (↑q ⟨x, ⋯⟩ + ↑q ⟨y, ⋯⟩)
+but is expected to have type
+  @Eq ℝ (↑q ⟨x + y, ⋯⟩) (↑q ⟨x, ⋯⟩ + ↑q ⟨y, ⋯⟩)
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:108:32: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:107:8: error: Type mismatch: After simplification, term
+  LinearPMap.map_smul q c
+    ⟨x, of_eq_true (Eq.trans (congrFun' (congrArg Membership.mem hqtop) x) Submodule.mem_top._simp_1)⟩
+ has type
+  @Eq ℝ (↑q (c • ⟨x, ⋯⟩)) (c • ↑q ⟨x, ⋯⟩)
+but is expected to have type
+  @Eq ℝ (↑q ⟨c • x, ⋯⟩) ((RingHom.id ℝ) c • ↑q ⟨x, ⋯⟩)
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:110:38: error: Application type mismatch: The argument
+  hpq_eq
+has type
+  ∀ ⦃x : ↥p.domain⦄ ⦃y : ↥q.domain⦄, ↑x = ↑y → ↑p x = ↑q y
+but is expected to have type
+  ?m.711 = ?m.712
+in the application
+  congrArg (fun L => ?m.714) hpq_eq
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:110:33: error: Function expected at
+  L
+but this term has type
+  ?m.709
+
+Note: Expected a function because this term is being applied to the argument
+  x
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:118:8: error: `simp` made no progress
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:119:19: error: unsolved goals
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+s : PointedCone ℝ (E × ℝ) := { carrier := {z | N z.1 ≤ z.2}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+D : Submodule ℝ (E × ℝ) := { carrier := {z | z.1 ∈ f.domain}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+fstD : ↥D →ₗ[ℝ] ↥f.domain := { toFun := fun z => ⟨(↑z).1, ⋯⟩, map_add' := ⋯, map_smul' := ⋯ }
+sndD : ↥D →ₗ[ℝ] ℝ := { toFun := fun z => (↑z).2, map_add' := ⋯, map_smul' := ⋯ }
+p : E × ℝ →ₗ.[ℝ] ℝ := { domain := D, toFun := sorry }
+q : E × ℝ →ₗ.[ℝ] ℝ
+hqtop : q.domain = ⊤
+hqpos : ∀ (x : ↥q.domain), ↑x ∈ s → 0 ≤ ↑q x
+hpq_dom : p.domain ≤ q.domain
+hpq_eq : ∀ ⦃x : ↥p.domain⦄ ⦃y : ↥q.domain⦄, ↑x = ↑y → ↑p x = ↑q y
+Q : E × ℝ →ₗ[ℝ] ℝ := { toFun := fun z => ↑q ⟨z, ⋯⟩, map_add' := ⋯, map_smul' := ⋯ }
+Q_on_p : ∀ (x : ↥p.domain), Q ↑x = ↑p x
+c : ℝ
+x : E
+⊢ Q (c • x, 0) = c * Q (x, 0)
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth2_maximal_extension_available\trial_1\attempt_1.lean:140:22: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+'Depth2.benchmark_check_hahn_banach' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ provided_exists_top,
+ Quot.sound]

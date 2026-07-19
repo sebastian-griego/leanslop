@@ -1,0 +1,4 @@
+'Depth1.benchmark_check_hahn_banach' depends on axioms: [propext,
+ Classical.choice,
+ provided_riesz_extension,
+ Quot.sound]

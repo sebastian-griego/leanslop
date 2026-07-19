@@ -1,53 +1,95 @@
 {
   "date": "2026-07-19",
-  "kind": "exploratory spot check",
+  "kind": "small-sample dependency-redaction investigation",
   "authentication": "Codex CLI with ChatGPT session",
   "api_keys_used": false,
-  "model": "gpt-5.4",
+  "primary_model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
   "lean": "v4.32.0",
   "mathlib": {
     "tag": "v4.32.0",
     "commit": "81a5d257c8e410db227a6665ed08f64fea08e997"
   },
-  "generation_tools": {
-    "filesystem": false,
-    "shell": false,
-    "browser": false,
-    "web_search": false
-  },
-  "verifier_at_generation": {
-    "required_type_wrapper": false,
-    "forbidden_tokens_checked": true,
-    "sorry_ax_checked": true
-  },
-  "posthoc_verifier": {
-    "required_type_wrapper": true,
-    "axiom_closure_checked": true,
-    "allowed_core_axioms": [
-      "propext",
-      "Classical.choice",
-      "Quot.sound"
-    ],
-    "result": "The exact control completion still passes; all three exact depth-1 completions still fail."
-  },
-  "results": [
+  "one_shot": [
     {
-      "run_id": "20260719T175249Z",
-      "task": "control_shallow_algebra",
-      "trials": 1,
-      "sequential_attempts": 1,
-      "lean_verified": 1
+      "task": "control_hahn_banach_premise_available",
+      "verified": 3,
+      "trials": 3
     },
     {
-      "run_id": "20260719T173519Z",
+      "task": "baseline_hahn_banach_available",
+      "verified": 5,
+      "trials": 5
+    },
+    {
+      "task": "rank_nullity_target_redacted",
+      "verified": 3,
+      "trials": 3
+    },
+    {
+      "task": "intermediate_value_interfaces_redacted",
+      "verified": 1,
+      "trials": 3
+    },
+    {
       "task": "depth1_riesz_available",
-      "trials": 1,
-      "sequential_attempts": 3,
-      "lean_verified": 0,
-      "note": "The first candidate was compiled post hoc after a harmless todo-list event was reclassified."
+      "verified": 0,
+      "trials": 3
+    },
+    {
+      "task": "depth2_maximal_extension_available",
+      "verified": 0,
+      "trials": 3
+    },
+    {
+      "task": "depth3_one_step_available",
+      "verified": 0,
+      "trials": 3
+    },
+    {
+      "task": "depth4_no_scaffold",
+      "verified": 0,
+      "trials": 5
     }
   ],
-  "deeper_tiers_run": false,
-  "depth_curve_measured": false,
-  "reason": "The shallowest Hahn-Banach redaction tier had no success in this one repair trajectory, so deeper tiers could not show a further decline."
+  "adaptive_hahn_banach": [
+    {
+      "task": "depth1_riesz_available",
+      "attempts": 2,
+      "verified_on_attempt": 2
+    },
+    {
+      "task": "depth2_maximal_extension_available",
+      "attempts": 3,
+      "verified_on_attempt": null
+    },
+    {
+      "task": "depth3_one_step_available",
+      "attempts": 3,
+      "verified_on_attempt": null
+    },
+    {
+      "task": "depth4_no_scaffold",
+      "attempts": 3,
+      "verified_on_attempt": null
+    }
+  ],
+  "gpt_5_5_comparison": {
+    "verified": 1,
+    "trials": 4,
+    "passed_task": "baseline_hahn_banach_available"
+  },
+  "headline": {
+    "direct_hahn_banach_controls": "8/8",
+    "redacted_hahn_banach_one_shot": "0/14",
+    "depth_curve_measured": false,
+    "categorical_inability_supported": false
+  },
+  "protocol_notes": [
+    "One library-baseline trial recorded a rejected empty-patch attempt; no patch was applied.",
+    "Historical generation subprocesses removed *_API_KEY variables. The current runner also removes them from Lean compiler subprocesses.",
+    "Canonical-path tiers are not complete theorem-DAG layers.",
+    "Adaptive attempts are dependent repair turns, not pass@k samples."
+  ],
+  "evidence_manifest": "benchmark/evidence/2026-07-19-expanded/manifest.json"
 }

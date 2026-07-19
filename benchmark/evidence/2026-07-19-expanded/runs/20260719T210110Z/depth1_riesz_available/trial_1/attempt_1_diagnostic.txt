@@ -1,0 +1,42 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T210110Z\depth1_riesz_available\trial_1\attempt_1.lean:71:6: error: `toLinearMap` is not a field of structure `LinearPMap`
+C:\Users\sebas\leanslop\benchmark\results\20260719T210110Z\depth1_riesz_available\trial_1\attempt_1.lean:70:4: error: Fields missing: `toFun`
+
+Hint: Add missing fields:
+  
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲t̲o̲F̲u̲n̲ ̲:̲=̲ ̲_̲
+C:\Users\sebas\leanslop\benchmark\results\20260719T210110Z\depth1_riesz_available\trial_1\attempt_1.lean:83:21: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+hN0 : N 0 = 0
+D : Submodule ℝ (E × ℝ) := { carrier := {p | p.1 ∈ f.domain}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+first : ↥D →ₗ[ℝ] ↥f.domain := { toFun := fun p => ⟨(↑p).1, ⋯⟩, map_add' := ⋯, map_smul' := ⋯ }
+second : ↥D →ₗ[ℝ] ℝ := { toFun := fun p => (↑p).2, map_add' := ⋯, map_smul' := ⋯ }
+F : E × ℝ →ₗ.[ℝ] ℝ := { domain := D, toFun := sorry }
+c : { c // 0 ≤ c }
+hc : E × ℝ
+p : hc ∈ {p | N p.1 ≤ p.2}
+⊢ c • hc ∈ {p | N p.1 ≤ p.2}
+C:\Users\sebas\leanslop\benchmark\results\20260719T210110Z\depth1_riesz_available\trial_1\attempt_1.lean:94:8: error: 'change' tactic failed, pattern
+  0 ≤ (↑z).2 - ↑f ⟨(↑z).1, ⋯⟩
+is not definitionally equal to target
+  0 ≤ ↑F z
+C:\Users\sebas\leanslop\benchmark\results\20260719T210110Z\depth1_riesz_available\trial_1\attempt_1.lean:121:4: error: 'change' tactic failed, pattern
+  G (↑x, 0) = 0 - ↑f x
+is not definitionally equal to target
+  G ↑⟨(↑x, 0), ⋯⟩ = ↑F ⟨(↑x, 0), ⋯⟩
+C:\Users\sebas\leanslop\benchmark\results\20260719T210110Z\depth1_riesz_available\trial_1\attempt_1.lean:128:6: error: 'change' tactic failed, pattern
+  G (0, N x) = N x - ↑f 0
+is not definitionally equal to target
+  G ↑⟨(0, N x), ⋯⟩ = ↑F ⟨(0, N x), ⋯⟩
+'Depth1.benchmark_check_hahn_banach' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ provided_riesz_extension,
+ Quot.sound]

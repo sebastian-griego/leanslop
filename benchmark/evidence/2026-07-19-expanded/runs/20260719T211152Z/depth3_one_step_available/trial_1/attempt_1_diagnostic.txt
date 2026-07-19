@@ -1,0 +1,84 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:32:2: error(lean.unknownIdentifier): Unknown constant `LinearPMap.exists_maximal`
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:48:8: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:54:15: error: Tactic `rcases` failed: `a✝ : Real.le✝ (N hc.1) hc.2` is not an inductive datatype
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:60:6: error: `toLinearMap` is not a field of structure `LinearPMap`
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:59:4: error: Fields missing: `toFun`
+
+Hint: Add missing fields:
+  
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲t̲o̲F̲u̲n̲ ̲:̲=̲ ̲_̲
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:74:4: error: 'change' tactic failed, pattern
+  0 ≤ a - ↑f ⟨x, ⋯⟩
+is not definitionally equal to target
+  0 ≤ ↑F ⟨(x, a), hx⟩
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:89:6: error: linarith failed to find a contradiction
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+s : PointedCone ℝ (E × ℝ) := { carrier := {z | N z.1 ≤ z.2}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+F : E × ℝ →ₗ.[ℝ] ℝ := { domain := f.domain.prod ⊤, toFun := sorry }
+hF : ∀ (z : ↥F.domain), ↑z ∈ s → 0 ≤ ↑F z
+G : E × ℝ →ₗ.[ℝ] ℝ
+hFG : F ≤ G
+hG : ∀ (x : ↥G.domain), ↑x ∈ s → 0 ≤ ↑G x
+hmax : ∀ (h : E × ℝ →ₗ.[ℝ] ℝ), G < h → ¬∀ (x : ↥h.domain), ↑x ∈ s → 0 ≤ ↑h x
+hne : ¬G.domain = ⊤
+y : E
+b : ℝ
+z : ↥F.domain := ⟨(0, N y - b), ⋯⟩
+x : ↥G.domain := ⟨↑z, ⋯⟩
+a✝ : N y - b + b < N (0 + y)
+⊢ False
+failed
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:100:31: error(lean.invalidField): Invalid field `toLinearMap`: The environment does not contain `LinearPMap.toLinearMap`, so it is not possible to project the field `toLinearMap` from an expression
+  G
+of type `E × ℝ →ₗ.[ℝ] ℝ`
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:102:17: error: Application type mismatch: The argument
+  z
+has type
+  ↥F.domain
+of sort `Type u_1` but is expected to have type
+  ↑?m.575 = ↑?m.576
+of sort `Prop` in the application
+  hFG.right z
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:114:8: error: `simp` made no progress
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:115:19: error: unsolved goals
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+s : PointedCone ℝ (E × ℝ) := { carrier := {z | N z.1 ≤ z.2}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+F : E × ℝ →ₗ.[ℝ] ℝ := { domain := f.domain.prod ⊤, toFun := sorry }
+hF : ∀ (z : ↥F.domain), ↑z ∈ s → 0 ≤ ↑F z
+G : E × ℝ →ₗ.[ℝ] ℝ
+hFG : F ≤ G
+hG : ∀ (x : ↥G.domain), ↑x ∈ s → 0 ≤ ↑G x
+hmax : ∀ (h : E × ℝ →ₗ.[ℝ] ℝ), G < h → ¬∀ (x : ↥h.domain), ↑x ∈ s → 0 ≤ ↑h x
+hGtop : G.domain = ⊤
+inc : E × ℝ →ₗ[ℝ] ↥G.domain := { toFun := fun z => ⟨z, ⋯⟩, map_add' := ⋯, map_smul' := ⋯ }
+L : E × ℝ →ₗ[ℝ] ℝ := sorry
+hLF : ∀ (z : ↥F.domain), L ↑z = ↑F z
+hLone : L (0, 1) = 1
+c : ℝ
+x : E
+⊢ L (c • x, 0) = c * L (x, 0)
+C:\Users\sebas\leanslop\benchmark\results\20260719T211152Z\depth3_one_step_available\trial_1\attempt_1.lean:129:40: error: Type mismatch
+  le_rfl
+has type
+  ?m.767 ≤ ?m.767
+but is expected to have type
+  (x, N x) ∈ s
+'Depth3.benchmark_check_hahn_banach' depends on axioms: [propext, sorryAx, Classical.choice, provided_step, Quot.sound]

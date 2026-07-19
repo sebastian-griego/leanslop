@@ -1,0 +1,107 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth2_maximal_extension_available\trial_2\attempt_1.lean:44:21: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+hN0 : N 0 = 0
+c : { c // 0 ≤ c }
+hc : E × ℝ
+x : hc ∈ {z | N z.1 ≤ z.2}
+⊢ c • hc ∈ {z | N z.1 ≤ z.2}
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth2_maximal_extension_available\trial_2\attempt_1.lean:66:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?f (?x + ?y)
+in the target expression
+  (↑x).2 + (↑y).2 - ↑f ⟨(↑x).1 + (↑y).1, ⋯⟩ = (↑x).2 - ↑f ⟨(↑x).1, ⋯⟩ + ((↑y).2 - ↑f ⟨(↑y).1, ⋯⟩)
+
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+hN0 : N 0 = 0
+C : PointedCone ℝ (E × ℝ) := { carrier := {z | N z.1 ≤ z.2}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+D : Submodule ℝ (E × ℝ) := { carrier := {z | z.1 ∈ f.domain}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+x y : ↥D
+⊢ (↑x).2 + (↑y).2 - ↑f ⟨(↑x).1 + (↑y).1, ⋯⟩ = (↑x).2 - ↑f ⟨(↑x).1, ⋯⟩ + ((↑y).2 - ↑f ⟨(↑y).1, ⋯⟩)
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    (x + y).property
+  has type
+    ↑(x + y) ∈ D
+  but is expected to have type
+    (↑x).1 + (↑y).1 ∈ f.domain
+  in the application
+    ⟨(↑x).1 + (↑y).1, ⋯⟩
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth2_maximal_extension_available\trial_2\attempt_1.lean:73:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?f (?c • ?x)
+in the target expression
+  c * (↑x).2 - ↑f ⟨c • (↑x).1, ⋯⟩ = c * ((↑x).2 - ↑f ⟨(↑x).1, ⋯⟩)
+
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+hN0 : N 0 = 0
+C : PointedCone ℝ (E × ℝ) := { carrier := {z | N z.1 ≤ z.2}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+D : Submodule ℝ (E × ℝ) := { carrier := {z | z.1 ∈ f.domain}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+c : ℝ
+x : ↥D
+⊢ c * (↑x).2 - ↑f ⟨c • (↑x).1, ⋯⟩ = c * ((↑x).2 - ↑f ⟨(↑x).1, ⋯⟩)
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    (c • x).property
+  has type
+    ↑(c • x) ∈ D
+  but is expected to have type
+    c • (↑x).1 ∈ f.domain
+  in the application
+    ⟨c • (↑x).1, ⋯⟩
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth2_maximal_extension_available\trial_2\attempt_1.lean:80:6: error: Type mismatch: After simplification, term
+  x.property
+ has type
+  True
+but is expected to have type
+  (↑x).1 ∈ f.domain
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth2_maximal_extension_available\trial_2\attempt_1.lean:105:12: error(lean.invalidField): Invalid field `toLinearMap`: The environment does not contain `LinearPMap.toLinearMap`, so it is not possible to project the field `toLinearMap` from an expression
+  q
+of type `E × ℝ →ₗ.[ℝ] ℝ`
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth2_maximal_extension_available\trial_2\attempt_1.lean:111:12: error(lean.invalidField): Invalid field `toLinearMap`: The environment does not contain `LinearPMap.toLinearMap`, so it is not possible to project the field `toLinearMap` from an expression
+  q
+of type `E × ℝ →ₗ.[ℝ] ℝ`
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth2_maximal_extension_available\trial_2\attempt_1.lean:113:34: error: Application type mismatch: The argument
+  hagree
+has type
+  ∀ ⦃x : ↥p.domain⦄ ⦃y : ↥q.domain⦄, ↑x = ↑y → ↑p x = ↑q y
+but is expected to have type
+  ?m.892 = ?m.893
+in the application
+  DFunLike.congr_fun hagree
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth2_maximal_extension_available\trial_2\attempt_1.lean:121:8: error: 'change' tactic failed, pattern
+  -Q ((x, 0) + (y, 0)) = -Q (x, 0) + -Q (y, 0)
+is not definitionally equal to target
+  -Q (x + y, 0) = -Q (x, 0) + -Q (y, 0)
+C:\Users\sebas\leanslop\benchmark\results\20260719T204819Z\depth2_maximal_extension_available\trial_2\attempt_1.lean:126:8: error: 'change' tactic failed, pattern
+  -Q (c • (x, 0)) = c • -Q (x, 0)
+is not definitionally equal to target
+  -Q (c • x, 0) = (RingHom.id ℝ) c • -Q (x, 0)
+'Depth2.benchmark_check_hahn_banach' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ provided_exists_top,
+ Quot.sound]

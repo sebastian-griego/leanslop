@@ -1,0 +1,31 @@
+{
+  "task_id": "rank_nullity_target_redacted",
+  "family": "rank_nullity",
+  "depth": 1,
+  "frontier": "Quotient dimensions and the kernel-range equivalence remain available",
+  "final_declaration": "RankNullity.tested_rank_nullity",
+  "verification_declaration": "RankNullity.benchmark_check_rank_nullity",
+  "trial": 2,
+  "model": "gpt-5.6-sol",
+  "passed": true,
+  "attempts_used": 1,
+  "token_totals": {
+    "input_tokens": 8475,
+    "output_tokens": 1659
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model_seconds": 38.078,
+      "compile_seconds": 7.204,
+      "compiled": true,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 8475,
+        "cached_input_tokens": 0,
+        "output_tokens": 1659,
+        "reasoning_output_tokens": 1552
+      }
+    }
+  ]
+}

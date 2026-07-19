@@ -1,0 +1,31 @@
+{
+  "task_id": "depth4_no_scaffold",
+  "family": "hahn_banach",
+  "depth": 4,
+  "frontier": "Only the foundational imports; no Riesz/Hahn-Banach result",
+  "final_declaration": "Depth4.tested_hahn_banach",
+  "verification_declaration": "Depth4.benchmark_check_hahn_banach",
+  "trial": 2,
+  "model": "gpt-5.6-sol",
+  "passed": false,
+  "attempts_used": 1,
+  "token_totals": {
+    "input_tokens": 27650,
+    "output_tokens": 14148
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model_seconds": 338.765,
+      "compile_seconds": 7.61,
+      "compiled": false,
+      "validation_error": null,
+      "usage": {
+        "input_tokens": 27650,
+        "cached_input_tokens": 15872,
+        "output_tokens": 14148,
+        "reasoning_output_tokens": 10657
+      }
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T204837Z\depth4_no_scaffold\trial_2\attempt_1.lean:34:18: error: unsolved goals
+case snd
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+S : Set (Submodule ℝ (E × ℝ)) :=
+  {G | (∀ (b : ℝ), (0, b) ∈ G → b = 0) ∧ (∀ (x : ↥f.domain), (↑x, ↑f x) ∈ G) ∧ ∀ p ∈ G, p.2 ≤ N p.1}
+x y : ↥f.domain
+⊢ ↑f (x + y) = ↑f x + ↑f y
+C:\Users\sebas\leanslop\benchmark\results\20260719T204837Z\depth4_no_scaffold\trial_2\attempt_1.lean:37:19: error: unsolved goals
+case snd
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+S : Set (Submodule ℝ (E × ℝ)) :=
+  {G | (∀ (b : ℝ), (0, b) ∈ G → b = 0) ∧ (∀ (x : ↥f.domain), (↑x, ↑f x) ∈ G) ∧ ∀ p ∈ G, p.2 ≤ N p.1}
+c : ℝ
+x : ↥f.domain
+⊢ ↑f (c • x) = c * ↑f x
+C:\Users\sebas\leanslop\benchmark\results\20260719T204837Z\depth4_no_scaffold\trial_2\attempt_1.lean:50:6: error: Type mismatch: After simplification, term
+  congrArg Prod.snd hx
+ has type
+  0 = b
+but is expected to have type
+  b = 0
+C:\Users\sebas\leanslop\benchmark\results\20260719T204837Z\depth4_no_scaffold\trial_2\attempt_1.lean:97:4: error: Function expected at
+  zorn_le_nonempty ?m.619
+but this term has type
+  ∃ m, IsMax m
+
+Note: Expected a function because this term is being applied to the argument
+  hSne
+C:\Users\sebas\leanslop\benchmark\results\20260719T204837Z\depth4_no_scaffold\trial_2\attempt_1.lean:97:21: error: Application type mismatch: The argument
+  hchain
+has type
+  ∀ c ⊆ S, IsChain (fun x1 x2 => x1 ≤ x2) c → c.Nonempty → ∃ H ∈ S, ∀ G ∈ c, G ≤ H
+but is expected to have type
+  ∀ (c : Set ?m.615), IsChain (fun x1 x2 => x1 ≤ x2) c → c.Nonempty → BddAbove c
+in the application
+  zorn_le_nonempty hchain
+'Depth4.benchmark_check_hahn_banach' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

@@ -1,0 +1,59 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T211042Z\depth2_maximal_extension_available\trial_1\attempt_3.lean:44:12: error: linarith failed to find a contradiction
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+x y : E × ℝ
+hx : x ∈ {z | N z.1 ≤ z.2}
+hy : y ∈ {z | N z.1 ≤ z.2}
+h : N (x.1 + y.1) ≤ N x.1 + N y.1
+a✝ : x.2 + y.2 < N (x.1 + y.1)
+⊢ False
+failed
+C:\Users\sebas\leanslop\benchmark\results\20260719T211042Z\depth2_maximal_extension_available\trial_1\attempt_3.lean:51:10: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+C:\Users\sebas\leanslop\benchmark\results\20260719T211042Z\depth2_maximal_extension_available\trial_1\attempt_3.lean:138:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑f 0
+in the target expression
+  Q (0, t) = t - ↑f ⟨0, ⋯⟩
+
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+N_zero : N 0 = 0
+s : PointedCone ℝ (E × ℝ) :=
+  let __AddSubmonoid := { carrier := {z | N z.1 ≤ z.2}, add_mem' := ⋯, zero_mem' := ⋯ };
+  { toAddSubmonoid := __AddSubmonoid, smul_mem' := ⋯ }
+p : E × ℝ →ₗ.[ℝ] ℝ :=
+  { domain := f.domain.prod ⊤, toFun := { toFun := fun z => (↑z).2 - ↑f ⟨(↑z).1, ⋯⟩, map_add' := ⋯, map_smul' := ⋯ } }
+hp_nonneg : ∀ (z : ↥p.domain), ↑z ∈ s → 0 ≤ ↑p z
+hp_dense : ∀ (y : E × ℝ), ∃ x, ↑x + y ∈ s
+q : E × ℝ →ₗ.[ℝ] ℝ
+hqtop : q.domain = ⊤
+hq_nonneg : ∀ (x : ↥q.domain), ↑x ∈ s → 0 ≤ ↑q x
+hpq_dom : p.domain ≤ q.domain
+hpq_rest : ∀ ⦃x : ↥p.domain⦄ ⦃y : ↥q.domain⦄, ↑x = ↑y → ↑p x = ↑q y
+hpq_val : ∀ (z : ↥p.domain), ↑p z = ↑q ⟨↑z, ⋯⟩
+hqmem : ∀ (z : E × ℝ), z ∈ q.domain
+Q : E × ℝ →ₗ[ℝ] ℝ := { toFun := fun z => ↑q ⟨z, ⋯⟩, map_add' := ⋯, map_smul' := ⋯ }
+hQp : ∀ (z : ↥p.domain), Q ↑z = ↑p z
+t : ℝ
+hz : (0, t) ∈ p.domain
+h : Q (0, t) = t - ↑f ⟨0, ⋯⟩
+⊢ Q (0, t) = t
+'Depth2.benchmark_check_hahn_banach' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ provided_exists_top,
+ Quot.sound]

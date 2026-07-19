@@ -1,0 +1,99 @@
+{
+  "started_at": "2026-07-19T20:58:09.092761+00:00",
+  "model": "gpt-5.6-sol",
+  "provider": "Codex CLI with ChatGPT authentication",
+  "trials": 2,
+  "max_attempts": 1,
+  "api_keys": "not used; *_API_KEY variables removed from Codex subprocesses",
+  "api_key_variables_removed": [
+    "ANTHROPIC_API_KEY",
+    "ARISTOTLE_API_KEY",
+    "SAM_API_KEY"
+  ],
+  "codex_cli_version": "codex-cli 0.144.6",
+  "lean_toolchain": "leanprover/lean4:v4.32.0",
+  "lean_version": "Lean (version 4.32.0, x86_64-w64-windows-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "mathlib": {
+    "input_revision": "v4.32.0",
+    "manifest_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+    "installed_commit": "81a5d257c8e410db227a6665ed08f64fea08e997"
+  },
+  "benchmark_git_commit": "2df07aff8b2b3567a3694d50300ebfd8978ebf47",
+  "runner_sha256": "d4e525c2d74ee1fecbca56d2324d01b9af7f20f17427bdac39bba3a69d7c93c3",
+  "task_sha256": {
+    "depth3_one_step_available": "8c8136a636d7c1706755a77143816a8db27b00205c7b65b9ecc87d1117f7e86e"
+  },
+  "tasks": [
+    "depth3_one_step_available"
+  ],
+  "finished_at": "2026-07-19T21:10:55.004530+00:00",
+  "status": "completed",
+  "results": [
+    {
+      "task_id": "depth3_one_step_available",
+      "family": "hahn_banach",
+      "depth": 3,
+      "frontier": "A supplied one-dimensional extension step",
+      "final_declaration": "Depth3.tested_hahn_banach",
+      "verification_declaration": "Depth3.benchmark_check_hahn_banach",
+      "trial": 1,
+      "model": "gpt-5.6-sol",
+      "passed": false,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 19431,
+        "output_tokens": 11563
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 328.984,
+          "compile_seconds": 7.438,
+          "compiled": false,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 19431,
+            "cached_input_tokens": 10752,
+            "output_tokens": 11563,
+            "reasoning_output_tokens": 11324
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "depth3_one_step_available",
+      "family": "hahn_banach",
+      "depth": 3,
+      "frontier": "A supplied one-dimensional extension step",
+      "final_declaration": "Depth3.tested_hahn_banach",
+      "verification_declaration": "Depth3.benchmark_check_hahn_banach",
+      "trial": 2,
+      "model": "gpt-5.6-sol",
+      "passed": false,
+      "attempts_used": 1,
+      "token_totals": {
+        "input_tokens": 28025,
+        "output_tokens": 17627
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "model_seconds": 420.312,
+          "compile_seconds": 7.312,
+          "compiled": false,
+          "validation_error": null,
+          "usage": {
+            "input_tokens": 28025,
+            "cached_input_tokens": 16896,
+            "output_tokens": 17627,
+            "reasoning_output_tokens": 15485
+          }
+        }
+      ]
+    }
+  ],
+  "infrastructure_failures": [],
+  "passed": 0,
+  "total_completed": 2,
+  "total_requested": 2
+}

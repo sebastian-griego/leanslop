@@ -1,0 +1,32 @@
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth3_one_step_available\trial_1\attempt_1.lean:34:4: error: Fields missing: `zero_mem'`
+
+Hint: Add missing fields:
+  
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲z̲e̲r̲o̲_̲m̲e̲m̲'̲ ̲:̲=̲ ̲_̲
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth3_one_step_available\trial_1\attempt_1.lean:39:21: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+E : Type u_1
+inst✝¹ : AddCommGroup E
+inst✝ : Module ℝ E
+f : E →ₗ.[ℝ] ℝ
+N : E → ℝ
+N_hom : ∀ (c : ℝ), 0 < c → ∀ (x : E), N (c • x) = c * N x
+N_add : ∀ (x y : E), N (x + y) ≤ N x + N y
+hf : ∀ (x : ↥f.domain), ↑f x ≤ N ↑x
+c : { c // 0 ≤ c }
+hc : E × ℝ
+x : hc ∈ {x | N x.1 < x.2}
+⊢ c • hc ∈ {x | N x.1 < x.2}
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth3_one_step_available\trial_1\attempt_1.lean:44:6: error: `toLinearMap` is not a field of structure `LinearPMap`
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth3_one_step_available\trial_1\attempt_1.lean:43:4: error: Fields missing: `toFun`
+
+Hint: Add missing fields:
+  
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲t̲o̲F̲u̲n̲ ̲:̲=̲ ̲_̲
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth3_one_step_available\trial_1\attempt_1.lean:57:4: error: 'change' tactic failed, pattern
+  0 ≤ (↑x).2 - ↑f ⟨(↑x).1, ⋯⟩
+is not definitionally equal to target
+  0 ≤ ↑F x
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth3_one_step_available\trial_1\attempt_1.lean:59:31: error(lean.unknownIdentifier): Unknown constant `LinearPMap.exists_maximal`
+C:\Users\sebas\leanslop\benchmark\results\20260719T201620Z\depth3_one_step_available\trial_1\attempt_1.lean:59:9: error: Tactic `rcases` failed: `x✝ : ?m.251` is not an inductive datatype
+'Depth3.benchmark_check_hahn_banach' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
