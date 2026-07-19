@@ -102,6 +102,20 @@ spot check rather than a replication of an established protocol.
 
 ## Benchmark design
 
+Hahn-Banach says, roughly, that a linear rule defined on part of a vector space
+can be extended to the whole space without violating its original bound. The
+benchmark uses mathlib's algebraic real-valued form: a partial linear map
+dominated by a sublinear function must have a total linear extension with the
+same domination property.
+
+This is not a test made by deleting arbitrary lines from a proof. Every task
+asks for the same final theorem under controlled imports. The controls leave the
+finished result available, either under its library name or as an exact renamed
+premise. The redacted tasks remove that final declaration and expose
+progressively earlier named checkpoints along one known proof path. The model
+must reconstruct everything between the available checkpoint and the final
+statement.
+
 The pinned environment is Lean and mathlib `v4.32.0`, with mathlib commit
 `81a5d257c8e410db227a6665ed08f64fea08e997`. The relevant canonical local path
 in mathlib is:
@@ -140,10 +154,11 @@ template. Thus all tasks are satisfiable in the pinned environment.
 
 ### Generation and verification
 
-- `gpt-5.6-sol` and `gpt-5.5` were invoked at high reasoning effort in fresh,
-  ephemeral directories. Shell, browser, web, app, code-host, and related tools
-  were disabled. The model received the fixed template and, only in adaptive
-  runs, the previous Lean diagnostic.
+- The primary model was the Codex model `gpt-5.6-sol`, invoked at high reasoning
+  effort. A small comparison used `gpt-5.5` at the same setting.
+- Each run used a fresh, ephemeral directory. Shell, browser, web, app,
+  code-host, and related tools were disabled. The model received the fixed
+  template and, only in adaptive runs, the previous Lean diagnostic.
 - Each attempt had a 900-second model timeout and a 180-second Lean timeout.
   A fixed cap does not imply equal actual compute: token use and completion time
   varied substantially.
@@ -182,14 +197,21 @@ All rows below are fresh sessions with `max_attempts=1`.
 | Hahn depth 3 | 0/3 | 412.469 s |
 | Hahn depth 4 | 0/5 | 338.765 s |
 
+The core Hahn-Banach comparison is one theorem family tested repeatedly: eight
+one-shot control trials and fourteen one-shot reconstruction trials across four
+frontiers. Those repetitions estimate reliability on this target; they do not
+provide the theorem diversity of a broad benchmark.
+
 The primary matrix before adding the matched control contained 25 trials and
 used 396,678 input tokens plus 224,298 output tokens. The three matched controls
 add 26,561 input and 510 output tokens.
 
 The strongest within-target observation is the discontinuity between direct
 theorem availability, 8/8 across two controls, and any Hahn-Banach
-reconstruction, 0/14. The matched control rules out the full extension-module
-import as the sole explanation: the model can connect a renamed premise to the
+reconstruction, 0/14. The 8/8 controls are not eight from-scratch proofs: they
+show that the model can recognize and use the finished result when it is
+available. The matched control rules out the full extension-module import as
+the sole explanation because the model can connect a renamed premise to the
 exact goal under the same narrow imports.
 
 The result does **not** show progressive degradation from depth 1 to depth 4.
@@ -288,7 +310,9 @@ structure, but none establishes a monotonic declaration-depth law.
 ## Limitations
 
 - The sample is small and not statistically powered.
-- Hahn-Banach is the only family with a four-frontier series.
+- At the theorem-family level, the four-frontier experiment is an `n=1` case
+  study. Hahn-Banach is the only family with a depth series; repeated trials do
+  not change that scope.
 - The series follows one canonical proof path, not an exhaustive theorem DAG.
 - Alternate declarations and routes may survive redaction; the IVT success
   demonstrates why canonical depth is not intrinsic difficulty.
